@@ -14,8 +14,10 @@
         "filament/tables": "^3.2",
         "filament/widgets": "^3.2",
         "laravel/framework": "^11.0",
+        "laravel/jetstream": "^5.0",
+        "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
-        "livewire/livewire": "^3.4",
+        "livewire/livewire": "^3.0",
         "openspout/openspout": "^4.23"
     },
     "require-dev": {
