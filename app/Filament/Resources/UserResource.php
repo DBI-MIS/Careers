@@ -26,6 +26,10 @@ class UserResource extends Resource
     protected static ?string $navigationGroup = 'Management';
 
     protected static ?int $navigationSort = 6;
+    
+    protected $casts = [
+        'password' => 'hashed',
+    ];
 
     public static function form(Form $form): Form
     {
@@ -40,8 +44,7 @@ class UserResource extends Resource
                     ->maxLength(255),
                 TextInput::make('password')
                     ->password()
-                    ->required()
-                    ->maxLength(255),
+                    ->required(),
                 Select::make('role')
                     ->options(User::ROLES)
                     ->required(),

@@ -9,6 +9,7 @@ use App\Livewire\Counter;
 
 Route::get('/', HomeController::class)->name('home');
 
+
 Route::get('/job', [PostController::class, 'index'])->name('posts.index');
 
 Route::get('/job/{post:slug}', [PostController::class, 'show'])->name('posts.show');

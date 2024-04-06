@@ -15,7 +15,7 @@
         </div>
         <div class="absolute top-0 left-0 mb-2 aspect-video w-full object-cover overflow-hidden -z-20">
             <video autoplay loop muted plays-inline class="pointer-events-none">
-                <source src="https://careersdev.dbiphils.com/AvpShort.webm" type="video/webm">
+                <source src="https://dbiphils.com/AvpShort.webm" type="video/webm">
             </video>
         </div>
 

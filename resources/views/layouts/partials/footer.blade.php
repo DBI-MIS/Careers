@@ -14,7 +14,7 @@
     <div class="flex space-x-4">
         <a class="text-gray-500 hover:text-blue-500" href="{{ route('home') }}" :active="request()->routeIs('home')">{{ __('Careers') }} </a>
         <a class="text-gray-500 hover:text-blue-500" href="{{ route('posts.index') }}" :active="request()->routeIs('posts.index')">{{ __('Find Job') }} </a>
-        <a class="text-gray-500 hover:text-blue-500" href="">{{ __('Login') }} </a>
+        <a class="text-gray-500 hover:text-blue-500" href="/admin">{{ __('Login') }} </a>
     </div>
     </div>
 </footer>
