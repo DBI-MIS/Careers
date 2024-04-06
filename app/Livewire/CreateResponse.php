@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Mail\EmailResponse;
 use App\Models\Response;
 use Carbon\Carbon;
 use DateTime;
@@ -17,16 +18,20 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Contracts\Mail\Mailable;
 use Illuminate\Contracts\View\View;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 
 class CreateResponse extends Component implements HasForms
 {
     use InteractsWithForms;
+    use Notifiable;
     
     // public ?array $data = [];
 
-    public ?string $post_id;
+    public ?string $post_title;
     public $date_response;
     public ?string $full_name = null;    
     public ?string $contact = null;
@@ -50,7 +55,7 @@ class CreateResponse extends Component implements HasForms
     {
         return $form
             ->schema([
-                TextInput::make('post_id')
+                TextInput::make('post_title')
                 ->label(__('Position')),
                 // ->relationship('post', 'title'),
                 TextInput::make('full_name')
@@ -84,10 +89,40 @@ class CreateResponse extends Component implements HasForms
         // Save the relationships from the form to the post after it is created.
         $this->form->model($response)->saveRelationships();
         $this->form->fill();
-        $this->redirectRoute('/job');
+        $this->redirect('/job', );
         
     }
 
+    // public function mail()
+    // {
+    //     $data = request()([
+    //         'full_name',
+    //         'date_response',
+    //         'contact',
+    //     ]);
+
+    //     Mail::to('desktoppublisher@dbiphils.com')->send(new EmailResponse($data));
+
+    //     dd('sent');
+    // }
+    // public function mail(): ?string
+    // {
+    //     $name = "Yeah";
+        
+    //     return Mail::to('desktoppublisher@dbiphils.com')->send(new EmailResponse($name));
+
+    // }
+
+//     public function toMail($notifiable)
+// {   $name = 'Yeah';
+//     return (new EmailResponse())
+//         ->view(
+//         'mail.mail', ['response' => $this->response])
+//         ->error()
+//         ->from('barrett@example.com', 'Barrett Blair')
+//         ->subject('Notification Subject')
+//         ->line('...');
+// }
 
     public function render()
     {

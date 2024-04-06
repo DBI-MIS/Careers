@@ -93,7 +93,7 @@
                         </x-filament::button>
                     </x-slot>
                  
-                    <livewire:create-response :post_id="$post->id" />
+                    <livewire:create-response :post_title="$post->title" />
                 </x-filament::modal>
 
         </article>

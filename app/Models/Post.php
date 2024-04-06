@@ -14,6 +14,9 @@ class Post extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    
+    
+
     protected $fillable = [
         'user_id',
         'title',
@@ -78,3 +81,4 @@ class Post extends Model
         return Str::limit(strip_tags($this->post_description), 200);
     }
 }
+

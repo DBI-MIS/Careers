@@ -46,7 +46,7 @@ class ResponseResource extends Resource
                         return;}
                 $set('slug', Str::slug($state));
                 }),
-                Select::make('post_id')
+                Select::make('post->title')
                     ->relationship('post', 'title')
                     ->searchable()
                     ->required()
