@@ -31,9 +31,14 @@ class PostResource extends Resource
 {
     protected static ?string $model = Post::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-pencil-square';
 
     protected static ?string $navigationGroup = 'Job Post';
+
+    public static function getNavigationBadge(): ?string
+{
+    return static::getModel()::count();
+}
 
     protected static ?int $navigationSort = 1;
     
@@ -117,7 +122,7 @@ class PostResource extends Resource
                     ->label(__('Post to Frontpage'))
                     ->offColor('danger'),
 
-                RichEditor::make('post_description')
+                MarkdownEditor::make('post_description')
                     ->required()
                     ->label(__('Job Description'))
                     ->disableToolbarButtons([

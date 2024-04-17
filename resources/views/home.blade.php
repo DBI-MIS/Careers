@@ -3,11 +3,12 @@
         <div class="w-full py-32 text-center relative">
             <h1 class="text-2xl font-bold text-center text-gray-700 md:text-3xl lg:text-5xl">
                 {{-- {{ __('home.hero.title') }} --}}
-                <h1 class="font-bold text-3xl sm:text-5xl lg:text-6xl xl:text-8xl text-balance animated-text text-white">Direct your future: <br>Join Us & <span></span></h1>
+                <h1 class="font-bold text-3xl sm:text-5xl lg:text-6xl xl:text-8xl text-balance animated-text text-white">Direct your future: <br>Join Us & <span>Thrive</span></h1>
             </h1>
+            <span>Succeed, Flourish, Grow,Prosper</span>
             {{-- <p class="mt-1 text-lg text-gray-500">{{ __('This is a Subtitle') }}</p> --}}
             <a class="inline-block px-6 py-4 mt-5 text-xl text-white bg-gray-800 rounded-md" href="{{ route('posts.index') }}">
-                {{ __('Join Us') }}</a>
+                {{ __('Join Now') }}</a>
                 {{-- <div class="mb-2 col-span-10">
                     <h1 class="font-bold text-3xl sm:text-5xl lg:text-6xl xl:text-8xl text-balance text-left animated-text">Direct your future: <br>Join Us & <span></span></h1>
                 </div> --}}

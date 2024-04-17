@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ResponseResource\Pages;
 use App\Filament\Resources\ResponseResource\RelationManagers;
+use App\Models\Post;
 use App\Models\Response;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
@@ -24,9 +25,15 @@ class ResponseResource extends Resource
 {
     protected static ?string $model = Response::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-document-arrow-down';
 
     protected static ?string $navigationGroup = 'Job Applications';
+    
+
+    public static function getNavigationBadge(): ?string
+{
+    return static::getModel()::count();
+}
 
     protected static ?int $navigationSort = 4;
 
@@ -39,14 +46,8 @@ class ResponseResource extends Resource
                 ->label(__('Full Name'))
                 ->live(onBlur:true)
                 ->columnSpan(2)
-                ->hint('  ')
-                ->afterStateUpdated(
-                    function(string $operation, string $state, Forms\Set $set) {
-                    if ($operation === 'edit'){
-                        return;}
-                $set('slug', Str::slug($state));
-                }),
-                Select::make('post->title')
+                ->hint('  '),
+                Select::make('post_title')
                     ->relationship('post', 'title')
                     ->searchable()
                     ->required()
@@ -73,17 +74,27 @@ class ResponseResource extends Resource
                     ->hint('#/Street'),
                     
                 FileUpload::make('attachment')
-                    ->disk('s3')
-                    ->directory('form-attachments')
-                    ->visibility('private')
-                    ->getUploadedFileNameForStorageUsing(
-                        fn (TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
-                            ->prepend('job-application-response-'),
-                    )
-                    ->columnSpan(3),
-                Hidden::make('slug')
-                    ->label(__('URL'))
-                    ->hint('This is auto-generated.'),
+                ->uploadingMessage('Uploading attachment...')
+                ->directory('form-attachments')
+                ->visibility('public')
+                ->acceptedFileTypes(['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'])
+                ->maxSize(5120)
+                ->getUploadedFileNameForStorageUsing(
+                    fn (TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
+                        ->prepend('job_response'),)
+                ->openable()
+                ->downloadable()
+                ->fetchFileInformation(true)
+                ->moveFiles()
+                ->storeFiles(true)
+                ->removeUploadedFileButtonPosition('right')
+                ->uploadButtonPosition('left')
+                ->uploadProgressIndicatorPosition('left')
+                // ->required()
+                ->columnSpan(3)
+                ->id('attachment')
+
+            ,
             ]) ->columns(3);
     }
 
@@ -91,21 +102,27 @@ class ResponseResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('full_name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('post.title')
-                    ->sortable(),
+                
                 Tables\Columns\TextColumn::make('date_response')
                     ->date()
+                    ->sortable()
+                    ->label(__('Date')),
+                Tables\Columns\TextColumn::make('full_name')
+                    ->searchable()
+                    ->label(__('Name')),
+                Tables\Columns\TextColumn::make('post.title')
+                 ->label(__('Position'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('contact')
+                ->label(__('Contact No.'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email_address')
+                ->label(__('Contact No.'))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('current_address'),
-                Tables\Columns\TextColumn::make('attachment')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('slug')
+                // Tables\Columns\TextColumn::make('current_address'),
+                Tables\Columns\IconColumn::make('attachment')
+                    ->icon('heroicon-o-link')
+                    ->wrap()
                     ->searchable(),
                 Tables\Columns\IconColumn::make('status')
                     ->boolean(),
@@ -121,7 +138,8 @@ class ResponseResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-            ])
+            ])->defaultSort('date_response', 'asc')
+            ->heading('Job Form Responses')
             ->filters([
                 //
             ])

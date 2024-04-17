@@ -43,20 +43,20 @@ class Post extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function response()
-    {
-        return $this->belongsTo(Post::class, 'post_id');
-    }
+    // public function response()
+    // {
+    //     return $this->belongsTo(Post::class, 'post_id');
+    // }
 
     public function categories()
     {
         return $this->belongsToMany(Category::class);
     }
 
-    public function responses()
-    {
-        return $this->belongsToMany(Response::class);
-    }
+    // public function responses()
+    // {
+    //     return $this->belongsToMany(Response::class);
+    // }
 
     public function likes()
     {

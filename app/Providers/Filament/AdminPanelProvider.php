@@ -30,6 +30,12 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->sidebarCollapsibleOnDesktop()
+            ->breadcrumbs(false)
+            ->darkMode(false)
+            ->brandLogo(asset('images/logo.svg'))
+            ->spa()
+            ->font('Poppins')
             ->colors([
                 'primary' => Color::Blue,
             ])

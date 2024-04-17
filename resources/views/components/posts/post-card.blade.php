@@ -6,7 +6,7 @@
             <a wire:navigate href="{{ route('posts.show', $post->slug) }}">{{ $post->title}}</a>
         </h1><span class="text-gray-500 text-sm">{{ $post->date_posted->diffForHumans()}}</span>
         </div>
-        <div class="text-sm sm:text-md line-clamp-2 col-span-4">{{ $post->post_description}}</div>
+        <div class="text-sm sm:text-md line-clamp-2 col-span-4">{{ $post->post_description }}</div>
         
         <div class="mt-3">
         <div class="flex items-center mb-2">

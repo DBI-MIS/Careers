@@ -13,7 +13,7 @@
             </h2>
 
             <p class="mt-2 text-base text-gray-700 font-light">
-                {{ $post->getExcerpt()}}
+                {{ $post->getExcerpt() }}
             </p>
             <div class=" flex flex-row justify-between items-center mt-6">
             <div class="article-actions-bar  flex items-center justify-start gap-2">

@@ -15,14 +15,12 @@ return new class extends Migration
         Schema::create('responses', function (Blueprint $table) {
             $table->id();
             $table->string('full_name');
-            $table->foreignIdFor(Post::class);
+            $table->foreignIdFor(Post::class,'post_title');
             $table->date('date_response');
             $table->string('contact')->nullable();
             $table->string('email_address')->nullable();
             $table->longText('current_address')->charset('binary');
             $table->string('attachment')->nullable();
-            
-            $table->string('slug')->unique();
             $table->boolean('status')->default(true);
             
             $table->softDeletes();

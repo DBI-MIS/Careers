@@ -44,7 +44,7 @@
 
             <div class="my-6 flex text-base items-center justify-between border-t border-b border-gray-100 py-4 px-2 text-balance">
                 
-                    {{ $post->post_description }}
+                    {!! $post->post_description !!}
 
             </div>
 
@@ -86,14 +86,18 @@
                     </div>
                 </div> --}}
 
+            
+                {{-- <x-nav-link href="{{ route('application') }}">
+                    {{ __('Apply Here') }}
+                </x-nav-link> --}}
+                
                 <x-filament::modal width="2xl">
                     <x-slot name="trigger">
                         <x-filament::button class="mt-3 inline-flex items-center justify-center h-10 px-4 font-medium tracking-wide text-white transition duration-200 bg-blue-900 rounded-lg hover:bg-gray-800 focus:shadow-outline focus:outline-none">
                             Apply Now!
                         </x-filament::button>
                     </x-slot>
-                 
-                    <livewire:create-response :post_title="$post->title" />
+                    <livewire:create-response :post_title="$post->id" :date_response="Carbon\Carbon::now()->format('M-d-Y')"/>
                 </x-filament::modal>
 
         </article>
