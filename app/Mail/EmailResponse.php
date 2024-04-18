@@ -40,8 +40,10 @@ class EmailResponse extends Mailable implements ShouldQueue
     // public $email_address;
     // public $current_address;
     // public $attachment;
+
+    public $response;
     
-    public function __construct(public $response)
+    public function __construct($response, private $attachment )
     {
         $this->response = $response;
         // $post_title = $this->response->post_title;
@@ -82,8 +84,10 @@ class EmailResponse extends Mailable implements ShouldQueue
         
     
         return new Content(
-            view: 'mail.mail',
-            // with: [
+            markdown: 'mail.mail',
+            
+            with: [
+                'response', $this->response,
             //     'post_title' => $this->response->post_title,
             //     'full_name' => $this->response->full_name,
             //     'date_respone' => $this->response->date_response,
@@ -91,7 +95,7 @@ class EmailResponse extends Mailable implements ShouldQueue
             //     'email_address' => $this->response->email_address,
             //     'attachment' => $this->response->attachment
 
-            // ],
+            ],
         );
     }
 
@@ -104,7 +108,7 @@ class EmailResponse extends Mailable implements ShouldQueue
     public function attachments(): array
     {
         return [
-            Attachment::fromPath('public'),
+            Attachment::fromPath('storage/'.$this->response->attachment),
         ];
     }
 

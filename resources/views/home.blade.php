@@ -1,25 +1,25 @@
 <x-app-layout title="Home Page">
     @section('hero')
-        <div class="w-full py-32 text-center relative">
-            <h1 class="text-2xl font-bold text-center text-gray-700 md:text-3xl lg:text-5xl">
-                {{-- {{ __('home.hero.title') }} --}}
-                <h1 class="font-bold text-3xl sm:text-5xl lg:text-6xl xl:text-8xl text-balance animated-text text-white">Direct your future: <br>Join Us & <span>Thrive</span></h1>
-            </h1>
-            <span>Succeed, Flourish, Grow,Prosper</span>
+        <div class="w-full py-44 text-center relative">
+            <div class="absolute top-0 left-0 mb-2 aspect-video w-full object-cover overflow-hidden -z-20">
+                <video autoplay loop muted plays-inline class="pointer-events-none">
+                    <source src="https://dbiphils.com/AvpShort.webm" type="video/webm">
+                </video>
+            </div>
+            <h1 class="font-bold text-3xl sm:text-5xl lg:text-6xl xl:text-8xl text-balance text-white [text-shadow:_0_5px_0_rgb(0_0_0_/_40%)]">
+                Direct your future:
+                <br>Join us & 
+                <span x-data="{ texts: ['thrive!', 'succeed!','flourish!','grow!','prosper!'] }" x-typewriter.3000ms="texts"></span></h1>
+            
+            
             {{-- <p class="mt-1 text-lg text-gray-500">{{ __('This is a Subtitle') }}</p> --}}
-            <a class="inline-block px-6 py-4 mt-5 text-xl text-white bg-gray-800 rounded-md" href="{{ route('posts.index') }}">
+            <a class="inline-block px-10 py-4 mt-5 text-xl text-white bg-blue-600 rounded-lg" href="{{ route('posts.index') }}">
                 {{ __('Join Now') }}</a>
                 {{-- <div class="mb-2 col-span-10">
                     <h1 class="font-bold text-3xl sm:text-5xl lg:text-6xl xl:text-8xl text-balance text-left animated-text">Direct your future: <br>Join Us & <span></span></h1>
                 </div> --}}
             
         </div>
-        <div class="absolute top-0 left-0 mb-2 aspect-video w-full object-cover overflow-hidden -z-20">
-            <video autoplay loop muted plays-inline class="pointer-events-none">
-                <source src="https://dbiphils.com/AvpShort.webm" type="video/webm">
-            </video>
-        </div>
-
         <div class="w-full py-5 mx-auto bg-blue-900 bg-opacity-60 mt-20">
             
             <div class="w-1/2 flex justify-center mx-auto text-white">

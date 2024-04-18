@@ -7,6 +7,7 @@ use App\Models\Response;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 // use App\Models\Response;
@@ -18,6 +19,7 @@ class ResponseUpdate extends Notification
     use Notifiable;
     
     public $response;
+    
     // public  $post_title;
     // public  $date_response;
     // public ?string $full_name;    
@@ -29,9 +31,9 @@ class ResponseUpdate extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct($response)
     {
-        // $this->response = $response;
+        $this->response = $response;
         // dd($message);
         // $this->post_title = $post_title;
         // $this->full_name;
@@ -54,7 +56,7 @@ class ResponseUpdate extends Notification
     /**
      * Get the mail representation of the notification.
      */
-    public function toMail(object $notifiable): MailMessage
+    public function toMail(object $notifiable): Mailable
     {
         // $url = url('/job/'.$this->response>id);
         // return (new MailMessage)
@@ -71,18 +73,23 @@ class ResponseUpdate extends Notification
         // $email_address = $notifiable->email_address;
         // $attachment = url($notifiable->attachment);
         $response = $this->response;
+        $attachment = $this->response->attachment;
         
 
-        return (new MailMessage())
-                    ->subject('New Job Application')
-                    ->from('desktoppublisher@dbiphils.com', 'New Job Application ')
-                    ->line('You have a new Job Application')
-                    ->action('View Response', url('/admin/responses'))
-                    ->line('Thank you!');
+        // return (new MailMessage())
+        //             ->subject('New Job Application')
+        //             ->from('desktoppublisher@dbiphils.com', 'New Job Application ')
+        //             ->line('You have a new Job Application')
+        //             ->action('View Response', url('/admin/responses'))
+        //             ->line('Thank you!');
         
         
-        // return (new EmailResponse($this->response))
-        //     ->view('mail.mail')
+        return (new EmailResponse($response, $attachment))
+            ->view('mail.mail')->with('response', $this->response)
+            ->to('desktoppublisher@dbiphils.com')
+            ->subject('New Job Application')
+            ->from('desktoppublisher@dbiphils.com', 'New Job Application ')
+                
             
             
             ;
@@ -96,7 +103,7 @@ class ResponseUpdate extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            // $attachment = $this->response->attachment,
+            Attachment::fromPath('public'.$this->response->attachment),
         ];
     }
 }

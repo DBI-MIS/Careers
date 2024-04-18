@@ -108,4 +108,8 @@ return [
         'name' => env('MAIL_FROM_NAME'),
     ],
 
+    'paths' => [
+        resource_path('views/mail'),
+    ],
+
 ];

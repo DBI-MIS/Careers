@@ -11,19 +11,19 @@
     <div class="top-menu ml-10">
         
         <div class="flex space-x-5">
-        <x-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')">
+        <x-nav-link href="https://dbiphils.com">
             {{ __('Home') }}
         </x-nav-link>
-        <x-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')">
+        <x-nav-link href="https://projects.dbiphils.com">
             {{ __('Projects') }}
         </x-nav-link>
-        <x-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')">
+        <x-nav-link href="https://products.dbiphils.com">
             {{ __('Products') }}
         </x-nav-link>
         <x-nav-link href="{{ route('posts.index') }}" :active="request()->routeIs('posts.index')">
             {{ __('Careers') }}
         </x-nav-link>
-        <x-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')">
+        <x-nav-link href="https://about.dbiphils.com">
             {{ __('About') }}
         </x-nav-link>
     </div>
