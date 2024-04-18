@@ -146,10 +146,10 @@ class CreateResponse extends Component implements HasForms
                 ->uploadingMessage('Uploading attachment...')
                 ->directory('form-attachments')
                 ->visibility('public')
-                // ->acceptedFileTypes([
-                //     'application/pdf',
-                //     'application/msword',
-                //     'application/vnd.openxmlformats-officedocument.wordprocessingml.document'])
+                ->acceptedFileTypes([
+                    'application/pdf',
+                    'application/msword',
+                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document'])
                 ->maxSize(5120)
                 ->getUploadedFileNameForStorageUsing(
                     fn (TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
