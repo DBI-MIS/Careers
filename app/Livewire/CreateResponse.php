@@ -60,25 +60,25 @@ class CreateResponse extends Component implements HasForms
     #[Locked]
     public  $post_title;
     public  $date_response;
-    public ?string $full_name;    
+    #[Validate('required', message:'Please fill out with your full name.')]
+    #[Validate('min:5', message:'Your name is too short.')]
+    public ?string $full_name;
+    #[Validate('required', message:'Please fill out with your contact number.')]
+    #[Validate('min:11', message:'Your contact number is invalid.')]
     public ?string $contact;
+    #[Validate('required', message:'Please fill out with your email address.')]
+    #[Validate('email', message:'Your email is invalid.')]
     public ?string $email_address;
+    #[Validate('required', message:'Please fill out with your current address.')]
+    #[Validate('min:20', message:'Your current address format is invalid.')]
     public ?string $current_address;
-
+    #[Validate('required', message:'Please attached your resume.')]
+    #[Validate('file|mimes:pdf,doc,docx', message:'Your file must be in PDF or MS Word Format.')]
+    #[Validate('max:5120', message:'Your file must have maximum size of 5MB.')]
     public $attachment;
     
-    public $Disabled = false;
+    // public $Disabled = false;
 
-
-    // protected $validate = [
-    //     'post_title' => 'required',
-    //     'date_response' => 'required',
-    //     'full_name' => 'required',
-    //     'contact' => 'required',
-    //     'email_address' => 'required',
-    //     'current_address' => 'required',
-    //     'attachment' => 'required|file|mimes:pdf,doc,docx|max:5120',
-    // ];
 
     public function mount(Response $response): void
     {
@@ -108,7 +108,9 @@ class CreateResponse extends Component implements HasForms
 
                 TextInput::make('full_name')
                 ->label(__('Full Name'))
+                ->minValue(5)
                 ->required()
+                ->live()
                 ->columnSpan(3),
 
                 TextInput::make('date_response')
@@ -120,23 +122,34 @@ class CreateResponse extends Component implements HasForms
                 TextInput::make('contact')
                 ->label(__('Contact Number'))
                 ->required()
+                ->minValue(11)
+                ->live()
                 ->columnSpan(1),
 
                 TextInput::make('email_address')
                 ->label(__('Email'))
+                ->unique()
+                ->email()
+                ->live()
                 ->required()
                 ->columnSpan(1),
 
                 TextInput::make('current_address')
                 ->label(__('Current Addresss'))
+                ->minValue(20)
                 ->required()
+                ->live()
+
                 ->columnSpan(3),
                 
                 FileUpload::make('attachment')
                 ->uploadingMessage('Uploading attachment...')
                 ->directory('form-attachments')
                 ->visibility('public')
-                ->acceptedFileTypes(['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'])
+                // ->acceptedFileTypes([
+                //     'application/pdf',
+                //     'application/msword',
+                //     'application/vnd.openxmlformats-officedocument.wordprocessingml.document'])
                 ->maxSize(5120)
                 ->getUploadedFileNameForStorageUsing(
                     fn (TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
@@ -145,11 +158,11 @@ class CreateResponse extends Component implements HasForms
                 ->downloadable()
                 ->fetchFileInformation(true)
                 ->moveFiles()
-                ->nullable()
                 ->storeFiles(true)
                 ->required()
+                ->live()
                 ->columnSpan(3)
-                ->id('attachment-form')
+                ->id('attachment')
 
         
                 // ,
@@ -167,7 +180,7 @@ class CreateResponse extends Component implements HasForms
     
     public function create(): void
     {
-        // $this->validate();
+        $this->validate();
         $response = Response::create($this->form->getState());
     
         
@@ -186,18 +199,6 @@ class CreateResponse extends Component implements HasForms
         $this->redirect('/job');
         
     }
-    
-//     public function toMail(object $notifiable): MailMessage
-// {
-//     // $url = url('/attachment/'.$this->attachment->id);
-//     // Response::create($this->form->getState());
-    
-//     dd($this->form->toMail());
- 
-//     return (new MailMessage)->view('mail.mail',['attachment' => $this->attachment]);
-        
-// }
-    
 
     public function render() 
     {

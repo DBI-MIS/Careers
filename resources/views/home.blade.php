@@ -20,7 +20,7 @@
                 </div> --}}
             
         </div>
-        <div class="w-full py-5 mx-auto bg-blue-900 bg-opacity-60 mt-20">
+        <div class="w-full py-5 mx-auto bg-blue-900 bg-opacity-60 mt-10">
             
             <div class="w-1/2 flex justify-center mx-auto text-white">
                 
@@ -42,7 +42,7 @@
                     <hr>
                     <span class="text-xs lg:text-sm xl:text-base">Among the</span><br>
                     <span class="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-semibold inline-block"><span class="text-2xl align-top">Top</span>100</span><br>
-                    <span class="text-xs lg:text-sm xl:text-base italic text-pretty">*Employers for Fresh Graduates</span>
+                    <span class="text-xs lg:text-sm xl:text-base italic text-pretty">*Employer for Fresh Graduates</span>
                 </div>  
             </div>                       
                     

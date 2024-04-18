@@ -138,7 +138,7 @@ class ResponseResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-            ])->defaultSort('date_response', 'asc')
+            ])->defaultSort('date_response', 'desc')
             ->heading('Job Form Responses')
             ->filters([
                 //
