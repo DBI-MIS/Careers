@@ -21,7 +21,8 @@ return new class extends Migration
             $table->string('email_address')->nullable();
             $table->longText('current_address')->charset('binary');
             $table->string('attachment')->nullable();
-            $table->boolean('status')->default(true);
+            $table->boolean('review')->default(false);
+            $table->string('status')->default('pending');
             
             $table->softDeletes();
             $table->timestamps();

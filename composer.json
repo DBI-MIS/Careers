@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "eightynine/filament-excel-import": "^3.0",
         "filament/actions": "^3.2",
         "filament/filament": "*",
         "filament/forms": "^3.2",
@@ -21,7 +22,9 @@
         "laravel/tinker": "^2.9",
         "mailersend/laravel-driver": "^2.5",
         "openspout/openspout": "^4.23",
+        "outerweb/filament-settings": "^1.2",
         "php-http/guzzle7-adapter": "^1.0",
+        "pxlrbt/filament-excel": "^2.3",
         "railsware/mailtrap-php": "^1.7"
     },
     "require-dev": {

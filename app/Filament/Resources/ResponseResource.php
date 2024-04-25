@@ -2,24 +2,36 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Exports\ResponseExporter;
 use App\Filament\Resources\ResponseResource\Pages;
 use App\Filament\Resources\ResponseResource\RelationManagers;
 use App\Models\Post;
 use App\Models\Response;
+use App\ResponseStatus;
+use Carbon\Carbon;
+use Filament\Actions\ExportAction;
+use Filament\Actions\Exports\Enums\ExportFormat;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\SelectColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use pxlrbt\FilamentExcel\Columns\Column;
+use pxlrbt\FilamentExcel\Exports\ExcelExport;
 
 class ResponseResource extends Resource
 {
@@ -37,6 +49,13 @@ class ResponseResource extends Resource
 
     protected static ?int $navigationSort = 4;
 
+    // protected static array $statuses = [
+    //     'is pending' => 'pending',
+    //     'is cancelled' => 'cancelled',
+    //     'is hired' => 'hired',
+    //     'is unqualified' => 'unqualified',
+    // ];
+
     public static function form(Form $form): Form
     {
         return $form
@@ -47,6 +66,7 @@ class ResponseResource extends Resource
                 ->live(onBlur:true)
                 ->columnSpan(2)
                 ->hint('  '),
+                // Radio::make('status')->options(ResponseStatus::class),
                 Select::make('post_title')
                     ->relationship('post', 'title')
                     ->searchable()
@@ -101,31 +121,74 @@ class ResponseResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+        
             ->columns([
                 
                 Tables\Columns\TextColumn::make('date_response')
                     ->date()
                     ->sortable()
-                    ->label(__('Date')),
+                    ->label(__('Date'))
+                    ->alignCenter(),
                 Tables\Columns\TextColumn::make('full_name')
                     ->searchable()
-                    ->label(__('Name')),
+                    ->label(__('Name'))
+                    ->alignCenter(),
                 Tables\Columns\TextColumn::make('post.title')
                  ->label(__('Position'))
-                    ->sortable(),
+                    ->sortable()
+                    ->alignCenter(),
                 Tables\Columns\TextColumn::make('contact')
                 ->label(__('Contact No.'))
-                    ->searchable(),
+                    ->searchable()
+                    ->alignCenter(),
                 Tables\Columns\TextColumn::make('email_address')
-                ->label(__('Contact No.'))
-                    ->searchable(),
+                ->label(__('Email'))
+                    ->searchable()
+                    ->alignCenter(),
                 // Tables\Columns\TextColumn::make('current_address'),
                 Tables\Columns\IconColumn::make('attachment')
+                    ->grow(false)
+                    ->label(' ')
                     ->icon('heroicon-o-link')
                     ->wrap()
-                    ->searchable(),
-                Tables\Columns\IconColumn::make('status')
-                    ->boolean(),
+                    ->searchable()
+                    ->alignCenter(),
+                Tables\Columns\ToggleColumn::make('review')
+                    ->label(__('Reviewed'))
+                    ->sortable()
+                    ->alignCenter(),
+                    // TextColumn::make('review')
+                    // ->searchable(),
+                    // TextColumn::make('status')
+                    // ->color(fn (string $state): string => match ($state) {
+                    //     'pending' => 'gray',
+                    //     'cancelled' => 'warning',
+                    //     'hired' => 'success',
+                    //     'unqualified' => 'danger',
+                // }),
+                // TextColumn::make('status')
+                //     ->sortable()
+                //     ->badge()
+                    SelectColumn::make('status')
+                    ->options(ResponseStatus::class)
+                    ->selectablePlaceholder(false)
+                    ->sortable()
+                    ->grow(false)
+                    ->alignCenter()
+                    // ->badge()
+                    // ->options([
+                    //     'pending' => 'Pending',
+                    //     'cancelled' => 'Cancelled',
+                    //     'hired' => 'Hired',
+                    //     'unqualified' => 'Unqualified',
+                    // ])
+                    // ->colors([
+                    //     'pending' => 'gray',
+                    //     'cancelled' => 'warning',
+                    //     'hired' => 'success',
+                    //     'unqualified' => 'danger',
+                    // ])
+                    ,
                 // Tables\Columns\TextColumn::make('deleted_at')
                 //     ->dateTime()
                 //     ->sortable()
@@ -149,10 +212,28 @@ class ResponseResource extends Resource
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(), 
-                Tables\Actions\RestoreAction::make(), 
+                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    ExportBulkAction::make()->exports([
+                        ExcelExport::make()
+                        ->withFilename(date(Carbon::now()) . ' - Job Application Responses')
+                        ->withColumns([
+                            Column::make('date_response')
+                            ->heading('Date of Application'),
+                            Column::make('full_name')
+                            ->heading('Name of Applicant'),
+                            Column::make('post.title')
+                            ->heading('Position Applied'),
+                            Column::make('contact')
+                            ->heading('Contact No.'),
+                            Column::make('email_address')
+                            ->heading('Email Address'),
+                            Column::make('status')
+                            ->heading('Status'),
+                        ]),
+                    ]),
                     Tables\Actions\DeleteBulkAction::make(),
                     Tables\Actions\ForceDeleteBulkAction::make(), 
                     Tables\Actions\RestoreBulkAction::make(), 

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Notifications\ResponseUpdate;
+use App\ResponseStatus;
 use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -32,12 +33,14 @@ class Response extends Model
         'email_address',
         'current_address',
         'attachment',
+        'review',
         'status',
     ];
     
     protected $casts = [
         'date_response' => 'datetime',
-        'status' => 'boolean',
+        'review' => 'boolean',
+        'status' => ResponseStatus::class,
         // 'attachment' => 'array',
     ];
     public function job_title()

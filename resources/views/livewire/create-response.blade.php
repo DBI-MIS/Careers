@@ -8,7 +8,7 @@
         </button> --}}
         @csrf
         <x-filament-actions::modals />
-    <form wire:submit="create" wire:confirm="Are you sure you want to submit this application?">
+    <form wire:submit="create" wire:confirm="Are you sure you want to submit this application?" enctype="multipart/form-data">
         <div wire:loading.delay.long wire:target="submit">Sending Application...</div>
         
         
@@ -22,7 +22,7 @@
                 </div>
                 
 
-    <table class="w-full">
+    {{-- <table class="w-full">
       
       <tbody>
         <tr>
@@ -88,11 +88,11 @@
             </div>
     
         
-        
+         --}}
 
-        
-        {{-- {{ $this->form }} --}}
-        
+        {{-- @if() --}}
+        {{ $this->form }}
+        {{-- @endif --}}
 
         
         

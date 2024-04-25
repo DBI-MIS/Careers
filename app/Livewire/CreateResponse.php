@@ -14,13 +14,13 @@ use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Components\BaseFileUpload;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
+use Filament\Forms\Components\FileUpload;
 use Filament\Notifications\Notification;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -42,8 +42,9 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Pages\Concerns\InteractsWithFormActions;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\HtmlString;
 use Spatie\MediaLibrary\InteractsWithMedia;
-
 use function Filament\Support\is_slot_empty;
 use function Livewire\store;
 
@@ -55,6 +56,19 @@ class CreateResponse extends Component implements HasForms
     use Notifiable;
     use WithFileUploads;
     use LivewireWithFileUploads;
+    
+
+    // protected $fillable = [
+    //     'post_id',
+    //     'full_name',
+    //     'date_response',
+    //     'contact',
+    //     'email_address',
+    //     'current_address',
+    //     'attachment',
+    //     'review',
+    //     'status',
+    // ];
 
     // public ?array $data = [];
     #[Locked]
@@ -79,12 +93,16 @@ class CreateResponse extends Component implements HasForms
     
     // public $Disabled = false;
 
+    protected $casts = [
+        'date_response' => 'datetime',
+        // 'attachment' => 'array',
+    ];
+
 
     public function mount(Response $response): void
     {
         // $this->form->fill();
         $this->form->fill($response->toArray());
-
         // $this->date_response = Carbon::now()->format('M-d-Y');
         // $this->full_name = $response->full_name;
         // $this->contact = $response->contact;
@@ -99,8 +117,8 @@ class CreateResponse extends Component implements HasForms
     {
         return $form
             ->schema([
-                Hidden::make('post_title')
-                // ->relationship('post', 'title')
+                Select::make('post_title')
+                ->relationship('post', 'title')
                 // ->readOnly()
                 ->label(__('Position'))
                 // ->required()
@@ -113,8 +131,9 @@ class CreateResponse extends Component implements HasForms
                 ->live()
                 ->columnSpan(3),
 
-                TextInput::make('date_response')
+                DatePicker::make('date_response')
                 ->label(__('Date'))
+                ->default(now())
                 ->readOnly()
                 ->required()
                 ->columnSpan(1),
@@ -155,14 +174,15 @@ class CreateResponse extends Component implements HasForms
                     fn (TemporaryUploadedFile $file): string => (string) str($file->getClientOriginalName())
                         ->prepend('job_response-'),)
                 ->openable()
-                ->downloadable()
-                ->fetchFileInformation(true)
-                ->moveFiles()
-                ->storeFiles(true)
+                // ->downloadable()
+                // ->fetchFileInformation(true)
+                // ->moveFiles()
+                // ->storeFiles(true)
                 ->required()
                 ->live()
                 ->columnSpan(3)
                 ->id('attachment')
+
 
         
                 // ,
@@ -170,7 +190,9 @@ class CreateResponse extends Component implements HasForms
 
         
                 ,
+
                 ])
+                
             // ->statePath('data')
             ->model(Response::class);
             
@@ -178,11 +200,12 @@ class CreateResponse extends Component implements HasForms
     }
     
     
+
     public function create(): void
     {
         $this->validate();
         $response = Response::create($this->form->getState());
-    
+        $this->attachment->store(path: 'form-attachments');
         
         // dd($this->form->getState());
     
