@@ -12,6 +12,7 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/@marcreichel/alpine-typewriter/dist/alpine-typewriter.min.js" defer></script>
+        <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -29,7 +30,7 @@
 
             @yield('hero')
         
-            <main class="container mx-auto px-5 flex flex-grow">
+            <main class="flex flex-grow mx-[clamp(12px,_-8.8031px_+_6.501vi,_80px)]">
                 {{ $slot }}
             </main>
         

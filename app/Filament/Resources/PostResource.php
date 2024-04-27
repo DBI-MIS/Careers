@@ -26,6 +26,10 @@ use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Set;
 use Illuminate\Support\Str;
 use Filament\Forms\Get;
+use Filament\Tables\Columns\BadgeColumn;
+use Filament\Tables\Columns\CheckboxColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 
 class PostResource extends Resource
 {
@@ -34,6 +38,8 @@ class PostResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-pencil-square';
 
     protected static ?string $navigationGroup = 'Job Post';
+    
+    protected ?string $subheading = 'This is the subheading.';
 
     public static function getNavigationBadge(): ?string
 {
@@ -118,9 +124,21 @@ class PostResource extends Resource
                     ->grouped()
                     ->label(__('Job Level')),
 
-                Toggle::make('status')
+                Toggle::make('featured')
                     ->label(__('Post to Frontpage'))
-                    ->offColor('danger'),
+                    ->offColor('warning')
+                    ->default(true)
+                    ->onIcon('heroicon-m-check')
+                    ->offIcon('heroicon-m-x-mark')
+                    ->hintIcon('heroicon-o-information-circle', 'Set to "Enable" to show it on the Front Page'),
+                Toggle::make('status')
+                    ->label(__('Active'))
+                    ->offColor('warning')
+                    ->default(true)
+                    ->onIcon('heroicon-m-check')
+                    ->offIcon('heroicon-m-x-mark')
+                    ->hint(str('What is this?'))
+                    ->hintIcon('heroicon-o-information-circle', 'Set to "Active" to show it on the Search Job Page'),
 
                 MarkdownEditor::make('post_description')
                     ->required()
@@ -187,30 +205,42 @@ class PostResource extends Resource
         return $table
             ->columns([
                 // Tables\Columns\TextColumn::make('id'),
-                Tables\Columns\TextColumn::make('title')
+                TextColumn::make('title')
                     ->searchable()
                     ->label(__('Job Title')),
-                Tables\Columns\TextColumn::make('author.name')
-                    ->searchable()
-                    ->label(__('Posted By')),
-                Tables\Columns\TextColumn::make('date_posted')
+                // Tables\Columns\TextColumn::make('author.name')
+                //     ->searchable()
+                //     ->label(__('Posted By')),
+                TextColumn::make('date_posted')
                     ->date('D - M d, Y')
                     ->sortable()
                     ->label(__('Date Posted')),
-                Tables\Columns\ToggleColumn::make('status')
+                // TextColumn::make('categories')
+                // ->,
+                ToggleColumn::make('featured')
+                    ->label(__('On Frontpage'))
+                    ->sortable()
+                    ->onIcon('heroicon-m-check')
+                    ->offIcon('heroicon-m-x-mark')
+                    ->offColor('warning')
+                    ->alignCenter(),
+                ToggleColumn::make('status')
                     ->label(__('Active'))
                     ->sortable()
+                    ->onIcon('heroicon-m-check')
+                    ->offIcon('heroicon-m-x-mark')
+                    ->offColor('warning')
                     ->beforeStateUpdated(function ($record, $state) {
                         // Runs before the state is saved to the database.
                     })
                     ->afterStateUpdated(function ($record, $state) {
                         // Runs after the state is saved to the database.
                     }),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

@@ -41,6 +41,8 @@ class ResponseResource extends Resource
 
     protected static ?string $navigationGroup = 'Job Applications';
     
+    
+    
 
     public static function getNavigationBadge(): ?string
 {
@@ -137,70 +139,23 @@ class ResponseResource extends Resource
                  ->label(__('Position'))
                     ->sortable()
                     ->alignCenter(),
-                Tables\Columns\TextColumn::make('contact')
-                ->label(__('Contact No.'))
-                    ->searchable()
-                    ->alignCenter(),
-                Tables\Columns\TextColumn::make('email_address')
-                ->label(__('Email'))
-                    ->searchable()
-                    ->alignCenter(),
-                // Tables\Columns\TextColumn::make('current_address'),
                 Tables\Columns\IconColumn::make('attachment')
                     ->grow(false)
                     ->label(' ')
                     ->icon('heroicon-o-link')
                     ->wrap()
-                    ->searchable()
                     ->alignCenter(),
                 Tables\Columns\ToggleColumn::make('review')
                     ->label(__('Reviewed'))
                     ->sortable()
                     ->alignCenter(),
-                    // TextColumn::make('review')
-                    // ->searchable(),
-                    // TextColumn::make('status')
-                    // ->color(fn (string $state): string => match ($state) {
-                    //     'pending' => 'gray',
-                    //     'cancelled' => 'warning',
-                    //     'hired' => 'success',
-                    //     'unqualified' => 'danger',
-                // }),
-                // TextColumn::make('status')
-                //     ->sortable()
-                //     ->badge()
                     SelectColumn::make('status')
                     ->options(ResponseStatus::class)
                     ->selectablePlaceholder(false)
                     ->sortable()
+                    ->searchable()
                     ->grow(false)
                     ->alignCenter()
-                    // ->badge()
-                    // ->options([
-                    //     'pending' => 'Pending',
-                    //     'cancelled' => 'Cancelled',
-                    //     'hired' => 'Hired',
-                    //     'unqualified' => 'Unqualified',
-                    // ])
-                    // ->colors([
-                    //     'pending' => 'gray',
-                    //     'cancelled' => 'warning',
-                    //     'hired' => 'success',
-                    //     'unqualified' => 'danger',
-                    // ])
-                    ,
-                // Tables\Columns\TextColumn::make('deleted_at')
-                //     ->dateTime()
-                //     ->sortable()
-                //     ->toggleable(isToggledHiddenByDefault: true),
-                // Tables\Columns\TextColumn::make('created_at')
-                //     ->dateTime()
-                //     ->sortable()
-                //     ->toggleable(isToggledHiddenByDefault: true),
-                // Tables\Columns\TextColumn::make('updated_at')
-                //     ->dateTime()
-                //     ->sortable()
-                //     ->toggleable(isToggledHiddenByDefault: true),
                     
             ])->defaultSort('date_response', 'desc')
             ->heading('Job Form Responses')

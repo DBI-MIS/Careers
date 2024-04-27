@@ -1,5 +1,5 @@
 @component('mail::message')
-# New Job Application
+# New Job Application for {{ $post }}
 
 Name: {{ $response['full_name'] }}<br>
 Contact: {{ $response['contact'] }}<br>

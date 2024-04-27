@@ -2,10 +2,10 @@
 <x-app-layout :title="$post->title">
 
 
-        <article class="col-span-8 md:col-span-3 mt-10 mx-auto py-5 w-full" style="max-width:900px">
+        <article class="col-span-8 md:col-span-3 md:mt-10 mx-auto py-5 w-full" style="max-width:900px">
             <div class="flex flex-row justify-between">
             {{-- <img class="w-full my-2 rounded-lg" src="" alt=""> --}}
-            <h1 class="text-4xl font-bold text-left text-gray-800">
+            <h1 class="text-2xl md:text-4xl font-bold text-left text-gray-800">
                 {{ $post->title }}
             </h1>
                 <div class="flex items-center gap-2">

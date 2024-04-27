@@ -62,7 +62,7 @@ class PostList extends Component
     #[Computed()]
     public function posts()
     {
-        return Post::orderBy('date_posted', $this->sort)
+        return Post::orderBy('date_posted', $this->sort)->where('status',true)
         // ->whereHas('categories', function($query)
         // {
         //     $query->where('slug', $this->category);

@@ -35,7 +35,8 @@ class Post extends Model
 
     protected $casts = [
         'date_posted' => 'datetime',
-        'status' => 'boolean'
+        'status' => 'boolean',
+        'featured' => 'boolean',
     ];
 
     public function author()
@@ -43,20 +44,20 @@ class Post extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    // public function response()
-    // {
-    //     return $this->belongsTo(Post::class, 'post_id');
-    // }
+    public function response()
+    {
+        return $this->belongsTo(Response::class, 'post_title');
+    }
 
     public function categories()
     {
         return $this->belongsToMany(Category::class);
     }
 
-    // public function responses()
-    // {
-    //     return $this->belongsToMany(Response::class);
-    // }
+    public function responses()
+    {
+        return $this->belongsToMany(Response::class);
+    }
 
     public function likes()
     {

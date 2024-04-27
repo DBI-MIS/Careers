@@ -24,6 +24,8 @@ class CategoryFactory extends Factory
         
             'title' => $title,
             'slug' => Str($title, '-'),
+            'text_color' => 'white',
+            'bg_color' => 'blue',
         ];
     }
 }

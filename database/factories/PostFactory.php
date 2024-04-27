@@ -18,7 +18,7 @@ class PostFactory extends Factory
      */
     public function definition(): array
     {
-        $title = fake()->unique()->word();
+        $title = fake()->jobTitle();
 
         return [
             'title' => $title,
@@ -27,9 +27,10 @@ class PostFactory extends Factory
             'post_description' => fake()->paragraph(),
             'post_responsibility' => fake()->paragraph(),
             'post_qualification' => fake()->paragraph(),
-            'job_level' => fake()->sentence('1'),
-            'job_location' => fake()->sentence('1'),
-            'job_type' => fake()->sentence('1'),
+            'job_level' => fake()->word(),
+            'job_location' => fake()->word(),
+            'job_type' => fake()->word(),
+            // 'categories' => CategoryFactory::class,
             'slug' =>Str($title, '-'),
             'status' => 0,
             'featured' => 0,

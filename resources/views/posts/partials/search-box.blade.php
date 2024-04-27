@@ -3,9 +3,9 @@
 }" x-on:keyup.enter.window="$dispatch('search',{
     search : query
 })" id="search-box">
-<div>
+<div class="w-full">
     <h3 class="text-lg font-semibold text-gray-900 mb-3">Search</h3>
-    <div class="w-52 flex rounded-2xl bg-gray-100 py-2 px-3 mb-3 items-center">
+    <div class="w-full flex rounded-2xl bg-gray-100 py-2 md:px-3 mb-3 items-center">
         <span><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                 stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-500">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -15,7 +15,7 @@
         <input 
         wire:model="query"
         {{-- x-model="search" --}}
-            class="w-40 ml-1 bg-transparent focus:outline-none focus:border-none focus:ring-0 outline-none border-none text-xs text-gray-800 placeholder:text-gray-400"
+            class="w-full ml-1 bg-transparent focus:outline-none focus:border-none focus:ring-0 outline-none border-none text-xs text-gray-800 placeholder:text-gray-400"
             type="text" placeholder="Search Job">
             <x-button x-on:click="$dispatch('search',{
                 search : query

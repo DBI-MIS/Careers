@@ -17,13 +17,14 @@ class PostController extends Controller
         $categories = Cache::remember('categories', now(), function () {
             return Category::whereHas('posts', function ($query) {
                 $query->published();
-            })->take(10)->get();
+            })->take(20)->get();
         });
 
         return view(
             'posts.index',
             [
-                'categories' => $categories
+                'categories' => $categories,
+
             ]
         );
     }
@@ -33,7 +34,7 @@ class PostController extends Controller
         return view(
             'posts.show',
             [
-                'post' => $post
+                'post' => $post,
             ]
         );
     }

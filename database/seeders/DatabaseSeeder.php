@@ -26,33 +26,35 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
 
-        Post::factory()
+        Post::factory()->count(20)
     
-        ->create([
-
-            'title' => 'Administrative Staff',
-            'date_posted' => now(),
-            'user_id' => 1,
-            'post_description' => fake()->paragraph(),
-            'post_responsibility' => fake()->paragraph(),
-            'post_qualification' => fake()->paragraph(),
-            'job_level' => fake()->sentence('1'),
-            'job_location' => fake()->sentence('1'),
-            'job_type' => fake()->sentence('1'),
-            'slug' => 'adminstrative-staff',
-            'status' => 1,
-            'featured' => 1,
-
-        ]);
-
-        Category::factory()
         ->create(
-            [
-                'title' => 'Admin',
-                'slug' => 'admin',
-                'text_color' => 'white',
-                'bg_color' => 'blue',
-            ]
+        //     [
+
+        //     'title' => 'Administrative Staff',
+        //     'date_posted' => now(),
+        //     'user_id' => 1,
+        //     'post_description' => fake()->paragraph(),
+        //     'post_responsibility' => fake()->paragraph(),
+        //     'post_qualification' => fake()->paragraph(),
+        //     'job_level' => fake()->sentence('1'),
+        //     'job_location' => fake()->sentence('1'),
+        //     'job_type' => fake()->sentence('1'),
+        //     'slug' => 'adminstrative-staff',
+        //     'status' => 1,
+        //     'featured' => 1,
+
+        // ]
+    );
+
+        Category::factory()->count(10)
+        ->create(
+            // [
+            //     'title' => 'Admin',
+            //     'slug' => 'admin',
+            //     'text_color' => 'white',
+            //     'bg_color' => 'blue',
+            // ]
         );
         
 

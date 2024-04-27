@@ -19,11 +19,16 @@
         </div>
         <div class="flex items-center space-x-4 font-light ">
             <button class="{{ $sort === 'asc' ? 'text-gray-900 border-b border-gray-700': 'text-gray-500' }} py-4" wire:click="setSort('asc')">Latest</button>
-            <button class="{{ $sort === 'desc' ? 'text-gray-900 border-b border-gray-700': 'text-gray-500' }} py-4 " wire:click="setSort('desc)">Oldest</button>
+            <button class="{{ $sort === 'desc' ? 'text-gray-900 border-b border-gray-700': 'text-gray-500' }} py-4 " wire:click="setSort('desc')">Oldest</button>
             
         </div>
     </div>
     <div class="py-4">
+        @if ($this->posts->count() == 0)
+        <tr>
+            <td colspan="5">No Job Posts to display.</td>
+        </tr>
+        @endif
         @foreach($this->posts as $post)
         <x-posts.post-item :post="$post"/>
         @endforeach

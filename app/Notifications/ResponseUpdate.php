@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use App\Mail\EmailResponse;
+use App\Models\Post;
 use App\Models\Response;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -12,6 +13,8 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 // use App\Models\Response;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Arr;
+
 
 class ResponseUpdate extends Notification
 {
@@ -19,6 +22,7 @@ class ResponseUpdate extends Notification
     use Notifiable;
     
     public $response;
+    
     
     // public  $post_title;
     // public  $date_response;
@@ -31,16 +35,12 @@ class ResponseUpdate extends Notification
     /**
      * Create a new notification instance.
      */
+    // public $post_title == Post::find($post_title);
+
     public function __construct($response)
     {
         $this->response = $response;
-        // dd($message);
-        // $this->post_title = $post_title;
-        // $this->full_name;
-        // $this->date_response;
-        // $this->contact;
-        // $this->email_address;
-        // $this->attachment;
+    
     }
 
     /**
@@ -58,37 +58,21 @@ class ResponseUpdate extends Notification
      */
     public function toMail(object $notifiable): Mailable
     {
-        // $url = url('/job/'.$this->response>id);
-        // return (new MailMessage)
-        //             ->from('desktoppublisher@dbiphils.com', 'Notification')
-        //             ->line('The introduction to the notification.')
-        //             ->action('Notification Action', url('/'))
-        //             ->line('Thank you for using our application!');
-        // dd($notifiable);
-
-        // $post_title = $notifiable->post_title;
-        // $full_name = $notifiable->full_name;
-        // $date_respone = $notifiable->date_response;
-        // $contact = $notifiable->contact;
-        // $email_address = $notifiable->email_address;
-        // $attachment = url($notifiable->attachment);
+        
         $response = $this->response;
         $attachment = $this->response->attachment;
+        $post = Post::find($response->post_title)->title;
         
 
-        // return (new MailMessage())
-        //             ->subject('New Job Application')
-        //             ->from('desktoppublisher@dbiphils.com', 'New Job Application ')
-        //             ->line('You have a new Job Application')
-        //             ->action('View Response', url('/admin/responses'))
-        //             ->line('Thank you!');
         
+            
         
-        return (new EmailResponse($response, $attachment))
-            ->view('mail.mail')->with('response', $this->response)
+        return (new EmailResponse($response, $attachment, $post))
+            ->view('mail.mail')->with('response', $this->response)->with('post', $post)
             ->to('desktoppublisher@dbiphils.com')
             ->subject('New Job Application')
             ->from('desktoppublisher@dbiphils.com', 'New Job Application ')
+            // ->replyTo($this->response->email, $this->response->full_name, 'replyTo')
                 
             
             

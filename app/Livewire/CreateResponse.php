@@ -1,6 +1,8 @@
 <?php
 
+
 namespace App\Livewire;
+
 
 use App\Notifications\ResponseUpdate;
 use App\Http\Controllers\PostController;
@@ -47,15 +49,13 @@ use Illuminate\Support\HtmlString;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use function Filament\Support\is_slot_empty;
 use function Livewire\store;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Renderless;
 
 class CreateResponse extends Component implements HasForms
 {
     use InteractsWithForms;
-    use InteractsWithFormActions;
-    use InteractsWithActions;
     use Notifiable;
-    use WithFileUploads;
-    use LivewireWithFileUploads;
     
 
     // protected $fillable = [
@@ -200,12 +200,12 @@ class CreateResponse extends Component implements HasForms
     }
     
     
-
+    
     public function create(): void
     {
         $this->validate();
         $response = Response::create($this->form->getState());
-        $this->attachment->store(path: 'form-attachments');
+        // $this->attachment->store(path: 'form-attachments');
         
         // dd($this->form->getState());
     
@@ -214,13 +214,24 @@ class CreateResponse extends Component implements HasForms
 
         $response->notify(new ResponseUpdate($response));
         
+
+        
+        
+        $this->dispatch('post-created');
         // $post_title = 'test message';
         
         
         // $this->form->fill();
         
-        $this->redirect('/job');
+        // $this->redirect('/job');
         
+    }
+    #[On('post-created')] 
+    public function updatePostList()
+    {
+        session()->flash('message', 'Job Application submitted successfully.');
+
+        $this->form->fill();
     }
 
     public function render() 

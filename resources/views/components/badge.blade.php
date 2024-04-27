@@ -21,5 +21,5 @@
     };
     
 @endphp
-<button {{ $attributes }} class=" {{$textColor}} {{$bgColor}} rounded-xl px-3 py-1 text-base">
+<button {{ $attributes }} class=" {{$textColor}} {{$bgColor}} rounded-xl px-3 py-1 text-xs md:text-base">
             {{ $slot }}</button>
