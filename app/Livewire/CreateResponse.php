@@ -232,6 +232,7 @@ class CreateResponse extends Component implements HasForms
         session()->flash('message', 'Job Application submitted successfully.');
 
         $this->form->fill();
+        $this->attachment=null;
     }
 
     public function render() 

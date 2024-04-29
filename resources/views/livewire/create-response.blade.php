@@ -92,7 +92,8 @@
                 wire:model.change="attachment"
                 name="attachment"
                 class="!w-full !mb-4 border-blue-100 text-sm md:text-base"
-                instantUpload="true" >
+                instantUpload="true"
+                id="">
             {{-- <div wire:loading.delay.long wire:target="attachment">Uploading...</div> --}}
         
         
@@ -127,7 +128,7 @@
     </div>
     <div>
         @if (session()->has('message'))
-            <div class="alert alert-success text-green font-bold py-2">
+            <div class="alert alert-success text-green-700 font-bold py-2">
                 {{ session('message') }}
             </div>
         @endif
