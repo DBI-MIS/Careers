@@ -20,6 +20,8 @@ return new class extends Migration
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
+            $table->string('status')->default('pending');
+            $table->integer('order_column')->default(0);
             $table->timestamps();
         });
 

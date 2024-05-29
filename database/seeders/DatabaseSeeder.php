@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Task;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -26,36 +27,24 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
 
-        Post::factory()->count(20)
-    
-        ->create(
-        //     [
+        Post::factory()->count(20)->create();
 
-        //     'title' => 'Administrative Staff',
-        //     'date_posted' => now(),
-        //     'user_id' => 1,
-        //     'post_description' => fake()->paragraph(),
-        //     'post_responsibility' => fake()->paragraph(),
-        //     'post_qualification' => fake()->paragraph(),
-        //     'job_level' => fake()->sentence('1'),
-        //     'job_location' => fake()->sentence('1'),
-        //     'job_type' => fake()->sentence('1'),
-        //     'slug' => 'adminstrative-staff',
-        //     'status' => 1,
-        //     'featured' => 1,
+        Category::factory()->count(10)->create();
 
-        // ]
-    );
+        $users = User::factory(50)->create();
 
-        Category::factory()->count(10)
-        ->create(
-            // [
-            //     'title' => 'Admin',
-            //     'slug' => 'admin',
-            //     'text_color' => 'white',
-            //     'bg_color' => 'blue',
-            // ]
-        );
+        $tasks = Task::factory(30)
+            ->recycle($users)
+            ->create();
+
+            $tasks->each(function (Task $task) use ($users)
+            { 
+                $task->team()->attach(
+                    $users->shuffle()
+                    ->take(fake()->numberBetween(1,4))
+                    ->pluck('id')
+                );
+            });
         
 
     }

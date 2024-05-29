@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Enums\UserStatus;
 use App\Providers\Filament\AdminPanelProvider;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
@@ -55,6 +56,7 @@ class User extends Authenticatable implements FilamentUser
         'name',
         'email',
         'password',
+        'status',
         'role'
     ];
 
@@ -102,6 +104,20 @@ class User extends Authenticatable implements FilamentUser
     // {
     //     return $this->hasMany(Comment::class);
     // }
+
+    public function tasks()
+    {
+        return $this->belongsToMany(Task::class, 'task_user')->withTimestamps();
+    }
+
+    public static function ignoreTimestamps($should = true)
+    {
+        if ($should) {
+            static::$ignoreTimestampsOn = array_values(array_merge(static::$ignoreTimestampsOn, [static::class]));
+        } else {
+            static::$ignoreTimestampsOn = array_values(array_diff(static::$ignoreTimestampsOn, [static::class]));
+        }
+    }
 
     
 }
