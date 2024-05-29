@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Auth\CustomLogin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -27,12 +28,11 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->login()
+            ->login(CustomLogin::class)
             ->sidebarCollapsibleOnDesktop()
             ->breadcrumbs(false)
             ->darkMode(false)
-            ->brandName('DB Careers')
-            // ->brandLogo('DB Careers')
+            // ->brandName('DB Careers')
             ->databaseNotifications()
             ->spa()
             ->font('Poppins')

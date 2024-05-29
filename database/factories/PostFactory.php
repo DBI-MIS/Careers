@@ -18,7 +18,7 @@ class PostFactory extends Factory
      */
     public function definition(): array
     {
-        $title = fake()->jobTitle();
+        $title = fake()->unique()->jobTitle();
 
         return [
             'title' => $title,

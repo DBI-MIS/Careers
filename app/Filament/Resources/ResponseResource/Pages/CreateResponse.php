@@ -17,5 +17,9 @@ class CreateResponse extends CreateRecord
         return 'New Job Application Created';
     }
 
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
     
 }
