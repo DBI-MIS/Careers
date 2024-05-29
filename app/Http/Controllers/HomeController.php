@@ -16,12 +16,12 @@ class HomeController extends Controller
     
     {
 
-        $featuredPosts = Cache::remember('featuredPosts', now()->addDay(), function () {
-            return Post::where('status', true)->where('featured',true)->latest('date_posted')->take(6)->get();
-        });
+        // $featuredPosts = Cache::remember('featuredPosts', now()->addDay(), function () {
+        //     return Post::where('status', true)->where('featured',true)->latest('date_posted')->take(6)->get();
+        // });
         return view('home', [
-            'featuredPosts' => $featuredPosts,
-            // 'featuredPosts' => Post::where('status', true)->where('featured',true)->latest('date_posted')->take(6)->get(),
+            // 'featuredPosts' => $featuredPosts,
+            'featuredPosts' => Post::where('status', true)->where('featured',true)->latest('date_posted')->take(6)->get(),
 
         ]);
     }

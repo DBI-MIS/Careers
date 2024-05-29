@@ -69,7 +69,7 @@
             <div class="mb-16">
                 <hr>
                 <h2 class="my-2 sm:my-4 md:my-6 text-base md:text-lg xl:text-2xl text-gray-800 font-bold 2xl:text-white" animate-shake animate-infinite animate-ease-in>
-                    Featured Job Posts</h2>
+                    Featured Jobs</h2>
                 <div class="w-full">
                     <div class="grid grid-cols-2 gap-2">
 
