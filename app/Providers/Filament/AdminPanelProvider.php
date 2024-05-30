@@ -19,6 +19,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Outerweb\FilamentSettings\Filament\Plugins\FilamentSettingsPlugin;
 use App\Filament\Pages\Settings\Settings;
+use Filament\Support\Enums\MaxWidth;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -36,6 +37,7 @@ class AdminPanelProvider extends PanelProvider
             ->databaseNotifications()
             ->spa()
             ->font('Poppins')
+            ->maxContentWidth(MaxWidth::Full)
             ->colors([
                 'primary' => Color::hex('#36c'),
                 'danger' => Color::Red,

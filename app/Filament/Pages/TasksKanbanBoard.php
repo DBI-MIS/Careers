@@ -6,10 +6,13 @@ use App\Enums\TaskStatus;
 use App\Models\Task;
 use App\Models\User;
 use Filament\Actions\CreateAction;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Http\Middleware\Authenticate;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -53,11 +56,15 @@ protected function getEditModalFormSchema(null|int $recordId): array
             ->required(),
         TextInput::make('project')
             ->required(),
-        DateTimePicker::make('due_date')
+        DatePicker::make('due_date')
             ->required(),
         TextInput::make('progress')
             ->required()
             ->numeric(),
+            Select::make('user_id')
+            ->default(auth()->id())
+            ->relationship('user', 'name')
+            ->required(),
     ];
 }
 
@@ -76,6 +83,7 @@ protected function editRecord($recordId, array $data, array $state): void
         'project' => $data['project'],
         'due_date' => $data['due_date'],
         'progress' => $data['progress'],
+        'user_id' => $data['user_id'],
     ]);
 
 }
@@ -95,7 +103,11 @@ protected function getHeaderActions(): array
             ->required(),
         TextInput::make('project')
             ->required(),
-        DateTimePicker::make('due_date')
+        DatePicker::make('due_date')
+            ->required(),
+        Select::make('user_id')
+        ->default(auth()->id())->disabled()
+        ->relationship('user', 'name')
             ->required(),
 
         ]),
@@ -108,7 +120,7 @@ protected function additionalRecordData(Model $record): Collection
     return collect([
         'urgent' => $record->urgent,
         'progress' => $record->progress,
-        'owner' => $record->user->name,
+        // 'owner' => $record->user->name,
         'description' => $record->description,
 
     ]);

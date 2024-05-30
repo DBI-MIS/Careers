@@ -6,14 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
+use Illuminate\Support\Str;
 
 class Task extends Model implements Sortable
 {
     use HasFactory, SortableTrait;
 
     protected $fillable = [
-        'user_id',
-        'title',
+            'user',
+            'title',
             'description',
             'urgent',
             'project',
@@ -36,5 +37,10 @@ class Task extends Model implements Sortable
     public function team()
     {
         return $this->belongsToMany(User::class, 'task_user');
+    }
+
+    public function getTrim() 
+    {
+        return Str::limit(strip_tags($this->description), 100);
     }
 }
