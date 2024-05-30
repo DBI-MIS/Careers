@@ -33,6 +33,7 @@ class AdminPanelProvider extends PanelProvider
             ->sidebarCollapsibleOnDesktop()
             ->breadcrumbs(false)
             ->darkMode(false)
+            ->profile(isSimple: false)
             // ->brandName('DB Careers')
             ->databaseNotifications()
             ->spa()

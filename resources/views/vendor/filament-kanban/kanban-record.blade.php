@@ -45,10 +45,10 @@
             <div class="w-8 h-8 rounded-full bg-gray-200 border-2 border-white"></div>
         @endforeach
     </div>
-
+    <span class="text-xs font-light"> {{ $record->progress }}% Progress</span>
     <div class="h-3 w-full relative mb-2">
         <div class="h-1 bg-gray-200 rounded-full absolute w-full" ></div>
-        <div class="h-1 absolute rounded-full fi-color-primary !bg-blue-600" style="width: {{ $record->progress }}%"></div>
+        <div class="h-1 absolute rounded-full bg-gray-400 " style="width: {{ $record->progress }}%"></div>
     </div>
 
     <div class="font-light text-xs text-gray-400">
