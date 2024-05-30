@@ -11,11 +11,12 @@
 
     <div class="flex flex-col justify-between mb-2">
         <div>
+            @if ($record['urgent'])
+            <x-heroicon-s-star class="top-0 text-primary-500 w-4 h-4 inline-block" />
+        @endif
             {{ $record->{static::$recordTitleAttribute} }}
 
-            @if ($record['urgent'])
-                <x-heroicon-s-star class="text-primary-500 w-4 h-4 inline-block" />
-            @endif
+          
         </div>
 
         <div class="font-light text-sm text-gray-400">
@@ -36,7 +37,7 @@
     </div>
     <div class=" text-xs font-light mb-2">
         {{-- {{ $record['description'] }} --}}
-        {{ $record->getTrim() }}
+        {{ $record->getTrim() ?? 'No Description'}}
     </div>
 
     <div class="flex -space-x-2 mb-2">
@@ -47,7 +48,7 @@
 
     <div class="h-3 w-full relative mb-2">
         <div class="h-1 bg-gray-200 rounded-full absolute w-full" ></div>
-        <div class="h-1 absolute rounded-full bg-gray-400 " style="width: {{ $record->progress }}%"></div>
+        <div class="h-1 absolute rounded-full fi-color-primary !bg-blue-600" style="width: {{ $record->progress }}%"></div>
     </div>
 
     <div class="font-light text-xs text-gray-400">

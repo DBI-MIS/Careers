@@ -28,8 +28,8 @@ return new class extends Migration
         });
 
         Schema::create('task_user', function (Blueprint $table) {
-            $table->foreignIdFor(User::class)->constrained();
-            $table->foreignIdFor(Task::class)->constrained();
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Task::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

@@ -11,8 +11,6 @@ enum TaskStatus: string
     case Todo = 'todo';
     case OnGoing = 'on_going';
     case Done = 'done';
-    case Test = 'test';
-    case Test2 = 'test2';
 
     public function getTitle(): string
     {

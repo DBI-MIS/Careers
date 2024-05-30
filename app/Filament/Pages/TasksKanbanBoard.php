@@ -12,6 +12,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\ViewField;
 use Filament\Http\Middleware\Authenticate;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -29,7 +30,15 @@ class TasksKanbanBoard extends KanbanBoard
 
     protected function records(): Collection
 {
-    return Task::ordered()->get();
+
+    return Task::ordered()
+    ->whereHas('team', function($query) {
+        return $query->where('user_id', auth()->id());
+    }
+    )
+    ->orWhere('user_id', auth()->id())
+    ->get();
+    
 }
 
 public function onStatusChanged(int $recordId, string $status, array $fromOrderedIds, array $toOrderedIds): void
@@ -65,6 +74,13 @@ protected function getEditModalFormSchema(null|int $recordId): array
             ->default(auth()->id())
             ->relationship('user', 'name')
             ->required(),
+            Select::make('team')
+        ->label('Assigned User')
+        ->relationship('team','name')
+        ->multiple()
+        ->nullable()
+        ->searchable()
+        ->preload(),
     ];
 }
 
@@ -102,13 +118,22 @@ protected function getHeaderActions(): array
         Toggle::make('urgent')
             ->required(),
         TextInput::make('project')
-            ->required(),
+            ->nullable(),
         DatePicker::make('due_date')
-            ->required(),
+            ->nullable(),
         Select::make('user_id')
         ->default(auth()->id())->disabled()
         ->relationship('user', 'name')
             ->required(),
+
+        Select::make('team')
+        ->label('Assign User')
+        ->relationship('team','name')
+        ->multiple()
+        ->nullable()
+        ->searchable()
+        ->preload(),
+
 
         ]),
     ];
