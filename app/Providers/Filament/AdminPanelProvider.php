@@ -39,6 +39,7 @@ class AdminPanelProvider extends PanelProvider
             ->spa()
             ->font('Poppins')
             ->maxContentWidth(MaxWidth::Full)
+            ->viteTheme('resources/css/filament/admin/theme.css')
             ->colors([
                 'primary' => Color::hex('#36c'),
                 'danger' => Color::Red,

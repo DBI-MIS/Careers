@@ -37,7 +37,7 @@ class ResponseResource extends Resource
 {
     protected static ?string $model = Response::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-arrow-down';
+    protected static ?string $navigationIcon = 'heroicon-s-document-arrow-down';
 
     protected static ?string $navigationGroup = 'Job Applications';
     

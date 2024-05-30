@@ -43,4 +43,9 @@ class Task extends Model implements Sortable
     {
         return Str::limit(strip_tags($this->description), 100);
     }
+
+    public function scopeOrdered($query)
+    {
+        return $query->orderBy('due_date', 'desc');
+    }
 }

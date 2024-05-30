@@ -17,16 +17,27 @@ use Filament\Http\Middleware\Authenticate;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Mokhosh\FilamentKanban\Pages\KanbanBoard;
 
 class TasksKanbanBoard extends KanbanBoard
 {
+    protected static ?string $navigationIcon = 'heroicon-s-squares-plus';
+
+    protected static string $view = 'mytasks-kanban.kanban-board';
+ 
+protected static string $headerView = 'mytasks-kanban.kanban-header';
+ 
+protected static string $recordView = 'mytasks-kanban.kanban-record';
+ 
+protected static string $statusView = 'mytasks-kanban.kanban-status';
+
     protected static string $model = Task::class;
 
     protected static string $statusEnum = TaskStatus::class;
 
     protected static ?string $navigationGroup = 'Board';
-    protected static ?string $title = 'Tasks';
+    protected static ?string $title = 'My Tasks';
 
     protected function records(): Collection
 {
@@ -45,6 +56,7 @@ public function onStatusChanged(int $recordId, string $status, array $fromOrdere
 {
     Task::find($recordId)->update(['status' => $status]);
     Task::setNewOrder($toOrderedIds);
+    // Log::info($message);
 }
  
 public function onSortChanged(int $recordId, string $status, array $orderedIds): void
