@@ -20,6 +20,7 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Outerweb\FilamentSettings\Filament\Plugins\FilamentSettingsPlugin;
 use App\Filament\Pages\Settings\Settings;
 use Filament\Support\Enums\MaxWidth;
+use Joaopaulolndev\FilamentGeneralSettings\FilamentGeneralSettingsPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -35,7 +36,7 @@ class AdminPanelProvider extends PanelProvider
             ->darkMode(false)
             ->profile(isSimple: false)
             // ->brandName('DB Careers')
-            ->databaseNotifications()
+            // ->databaseNotifications()
             ->spa()
             ->font('Poppins')
             ->maxContentWidth(MaxWidth::Full)
@@ -77,11 +78,16 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->plugins([
-                
-                // FilamentSettingsPlugin::make()
-                //     ->pages([
-                //         Settings::class,
-                //     ])
+                FilamentGeneralSettingsPlugin::make()
+        ->canAccess(fn() => auth()->user()->id === 1)
+        ->setSort(3)
+        ->setIcon('heroicon-o-cog')
+        ->setNavigationGroup('Settings')
+        ->setTitle('General Settings')
+        ->setNavigationLabel('General Settings'),
+                    ])
+                    ->resources([
+                        config('filament-logger.activity_resource')
                     ]);               
     }
 }

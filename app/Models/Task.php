@@ -8,9 +8,11 @@ use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 use Illuminate\Support\Str;
 
+
 class Task extends Model implements Sortable
 {
     use HasFactory, SortableTrait;
+
 
     protected $fillable = [
             'user',
@@ -48,4 +50,7 @@ class Task extends Model implements Sortable
     {
         return $query->orderBy('due_date', 'desc');
     }
+
+
+    
 }

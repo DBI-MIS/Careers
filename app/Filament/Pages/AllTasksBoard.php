@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Enums\TaskStatus;
+use App\Filament\Resources\TaskResource;
 use App\Models\Task;
 use App\Models\User;
 use Carbon\Carbon;
@@ -17,11 +18,11 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Mokhosh\FilamentKanban\Pages\KanbanBoard;
-
 use SearchableTrait;
 
 class AllTasksBoard extends KanbanBoard
 {
+    
     
 
 protected static string $view = 'alltasks-kanban.kanban-board';
@@ -187,10 +188,8 @@ protected ?string $subheading = 'All Tasks Resets Daily';
         ]);
     }
 
-    
-
-    
-
-    
+       
     
     }
+
+   
