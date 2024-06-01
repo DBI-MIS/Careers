@@ -6,9 +6,15 @@ use App\Filament\Resources\TaskResource\Pages;
 use App\Filament\Resources\TaskResource\RelationManagers;
 use App\Models\Task;
 use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -19,40 +25,42 @@ class TaskResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static bool $shouldRegisterNavigation = false;
+    protected static ?string $navigationGroup = 'Board';    
+
+    protected static ?string $title = 'History';
+
+    protected static bool $shouldRegisterNavigation = true;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('user_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('title')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('description')
-                    ->required()
-                    ->columnSpanFull(),
-                Forms\Components\Toggle::make('urgent')
-                    ->required(),
-                Forms\Components\TextInput::make('project')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\DateTimePicker::make('due_date')
-                    ->required(),
-                Forms\Components\TextInput::make('progress')
-                    ->required()
-                    ->numeric()
-                    ->default(0),
-                Forms\Components\TextInput::make('status')
-                    ->required()
-                    ->maxLength(255)
-                    ->default('todo'),
-                Forms\Components\TextInput::make('order_column')
-                    ->required()
-                    ->numeric()
-                    ->default(0),
+                // TextInput::make('user')
+                //     ->required(),
+                // TextInput::make('title')
+                //     ->required(),
+                // Textarea::make('description')
+                //     ->required()
+                //     ->columnSpanFull(),
+                // Toggle::make('urgent')
+                //     ->required(),
+                // TextInput::make('project')
+                //     ->required()
+                //     ->maxLength(255),
+                // DatePicker::make('due_date')
+                //     ->required(),
+                // TextInput::make('progress')
+                //     ->required()
+                //     ->numeric()
+                //     ->default(0),
+                // TextInput::make('status')
+                //     ->required()
+                //     ->maxLength(255)
+                //     ->default('todo'),
+                // TextInput::make('order_column')
+                //     ->required()
+                //     ->numeric()
+                //     ->default(0),
             ]);
     }
 
@@ -60,40 +68,36 @@ class TaskResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user_id')
+                TextColumn::make('user.name')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('status')
+                    ->sortable()
+                    ->searchable()
+                    ->badge(),
+                    TextColumn::make('progress')
+                    ->suffix('%')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('title')
-                    ->searchable(),
-                Tables\Columns\IconColumn::make('urgent')
-                    ->boolean(),
-                Tables\Columns\TextColumn::make('project')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('due_date')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('progress')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('status')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('order_column')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                TextColumn::make('title')
+                     ->label('Task Name')
+                     ->wrap()
+                    ->searchable(),            
+                TextColumn::make('created_at')
+                    ->dateTime('m-d-Y')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                TextColumn::make('updated_at')
+                    ->dateTime('m-d-Y h:i A')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-            ])
+            ])->defaultSort('updated_at','desc')
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make(),
+                Action::make('history')->url(fn ($record) => TaskResource::getUrl('history', ['record' => $record]))
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -113,8 +117,9 @@ class TaskResource extends Resource
     {
         return [
             'index' => Pages\ListTasks::route('/'),
-            'create' => Pages\CreateTask::route('/create'),
-            'edit' => Pages\EditTask::route('/{record}/edit'),
+            // 'create' => Pages\CreateTask::route('/create'),
+            'history' => Pages\ActivityLogPage::route('/{record}/history'),
+            // 'edit' => Pages\EditTask::route('/{record}/edit'),
         ];
     }
 }

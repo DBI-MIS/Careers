@@ -86,8 +86,9 @@ class AdminPanelProvider extends PanelProvider
         ->setTitle('General Settings')
         ->setNavigationLabel('General Settings'),
                     ])
-                    ->resources([
-                        config('filament-logger.activity_resource')
-                    ]);               
+                    // ->resources([
+                    //     config('filament-logger.activity_resource')
+                    // ])
+                    ;               
     }
 }

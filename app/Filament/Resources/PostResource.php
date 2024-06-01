@@ -41,7 +41,7 @@ class PostResource extends Resource
 
     protected static ?string $navigationGroup = 'Job Post';
 
-    protected ?string $subheading = 'This is the subheading.';
+    protected ?string $subheading = 'Job Post';
 
     public static function getNavigationBadge(): ?string
     {

@@ -3,7 +3,7 @@ return [
     'datetime_format' => 'm/d/Y H:i:s',
     'date_format' => 'm/d/Y',
 
-    'activity_resource' => \Z3d0X\FilamentLogger\Resources\ActivityResource::class,
+    'activity_resource' => App\Filament\Resources\ActivityResource::class,
 
     'resources' => [
         'enabled' => true,

@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Mokhosh\FilamentKanban\Pages\KanbanBoard;
+use Spatie\Activitylog\Contracts\Activity;
 
 class TasksKanbanBoard extends KanbanBoard
 {
@@ -54,6 +55,8 @@ protected static string $statusView = 'mytasks-kanban.kanban-status';
 
 public function onStatusChanged(int $recordId, string $status, array $fromOrderedIds, array $toOrderedIds): void
 {
+   
+
     Task::find($recordId)->update(['status' => $status]);
     Task::setNewOrder($toOrderedIds);
     // Log::info($message);
@@ -104,6 +107,8 @@ protected function getEditModalRecordData(int $recordId, array $data): array
 
 protected function editRecord($recordId, array $data, array $state): void
 {
+    
+
     Task::find($recordId)->update([
         'title' => $data['title'],
         'description' => $data['description'],

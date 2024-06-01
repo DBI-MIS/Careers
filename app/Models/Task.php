@@ -2,17 +2,20 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 use Illuminate\Support\Str;
-
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\CausesActivity;
+use Illuminate\Database\Eloquent\Casts\AsCollection;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Task extends Model implements Sortable
 {
-    use HasFactory, SortableTrait;
-
+    use HasFactory, SortableTrait, LogsActivity, CausesActivity;
 
     protected $fillable = [
             'user',
@@ -24,14 +27,61 @@ class Task extends Model implements Sortable
             'progress',
             'status',
             'order_column',
+            'team'
+            // 'preferences',
+            // 'name',
     ];
 
+    protected $casts = [
+        'users' => AsArrayObject::class, // casting the JSON database column
+        'teams' => 'collection',
+        'updated_at' => 'datetime:m-d-Y h:i A',
+        'created_at' => 'datetime:m-d-Y h:i A'
+    ];
     // public function user_tasks()
     // {
     //     return $this->belongsToMany(User::class, 'task_user')->withTimestamps();
     // }
 
-    public function user()
+    protected static $recordEvents = ['created','updated','deleted'];
+    
+        
+    public function getActivitylogOptions(): LogOptions
+    {
+        
+        return LogOptions::defaults()
+        
+
+        ->dontSubmitEmptyLogs()
+        ->setDescriptionForEvent(fn(string $eventName) => "Tasks has been {$eventName}")
+            ->logOnly([
+                'user_id',
+                'title',
+                'progress',
+                'status',
+                'created_at',
+                'updated_at',
+            ])
+                
+            ->logOnlyDirty()
+        ->dontLogIfAttributesChangedOnly([
+            'user',
+            'title',
+            'description',
+            'updated_at',
+            'due_date',
+            'order_column',
+            'urgent',
+            'team',
+            'user'])
+    
+        
+        ;
+        
+            
+    }
+
+    public function user() 
     {
         return $this->belongsTo(User::class);
     }
@@ -51,6 +101,8 @@ class Task extends Model implements Sortable
         return $query->orderBy('due_date', 'desc');
     }
 
+    
 
+    
     
 }
