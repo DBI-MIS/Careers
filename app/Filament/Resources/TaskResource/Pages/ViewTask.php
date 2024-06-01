@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Filament\Resources\PostResource\Pages;
+namespace App\Filament\Resources\TaskResource\Pages;
 
-use App\Filament\Resources\PostResource;
+use App\Filament\Resources\TaskResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ViewRecord;
 use Parallax\FilamentComments\Actions\CommentsAction;
 
-class ViewPost extends ViewRecord
+class ViewTask extends ViewRecord
 {
-    protected static string $resource = PostResource::class;
+    protected static string $resource = TaskResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            Actions\EditAction::make(),
+            // Actions\EditAction::make(),
             CommentsAction::make(),
         ];
     }

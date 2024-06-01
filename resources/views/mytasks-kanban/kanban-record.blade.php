@@ -1,5 +1,5 @@
 <div id="{{ $record->getKey() }}" wire:click="recordClicked('{{ $record->getKey() }}', {{ @json_encode($record) }})"
-    class="record bg-white dark:bg-gray-700 rounded-lg px-4 py-2 cursor-grab font-medium text-gray-600 dark:text-gray-200 border-l-4 shadow-md border-blue-600"
+    class="record bg-lime-100/50 dark:bg-gray-700 rounded-lg px-4 py-2 cursor-grab font-medium text-gray-600 dark:text-gray-200 border-l-4 shadow-md border-blue-600"
     @if ($record->timestamps && now()->diffInSeconds($record->{$record::UPDATED_AT}) < 3) x-data x-init="
             $el.classList.add('animate-pulse-twice', 'bg-primary-100', 'dark:bg-primary-800')
             $el.classList.remove('bg-white', 'dark:bg-gray-700')
@@ -12,7 +12,10 @@
     <div class="flex flex-col justify-between mb-2">
         <div>
             @if ($record['urgent'])
-            <x-heroicon-s-star class="top-0 text-red-600 w-4 h-4 inline-block" />
+            <div class="flex items-center">
+            <div class="w-full h-2 text-right"></div>
+            <x-heroicon-s-star class="top-0 right-0 text-orange-500 w-5 h-5 inline-block" />
+            </div>
         @endif
             {{ $record->{static::$recordTitleAttribute} }}
 

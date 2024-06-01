@@ -11,11 +11,12 @@ use Illuminate\Support\Str;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\CausesActivity;
 use Illuminate\Database\Eloquent\Casts\AsCollection;
+use Parallax\FilamentComments\Models\Traits\HasFilamentComments;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Task extends Model implements Sortable
 {
-    use HasFactory, SortableTrait, LogsActivity, CausesActivity;
+    use HasFactory, SortableTrait, LogsActivity, CausesActivity, HasFilamentComments;
 
     protected $fillable = [
             'user',

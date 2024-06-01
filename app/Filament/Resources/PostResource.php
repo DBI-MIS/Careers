@@ -32,6 +32,8 @@ use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\CheckboxColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
+use Parallax\FilamentComments\Tables\Actions\CommentsAction;
+
 
 class PostResource extends Resource
 {
@@ -79,6 +81,7 @@ class PostResource extends Resource
                             ->multiple()
                             ->relationship('categories', 'title')
                             ->searchable()
+                            ->hint('*select main category first')
                             ->preload()
                             ->label(__('Job Categories'))
                             ->createOptionForm([
@@ -317,6 +320,7 @@ class PostResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                CommentsAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

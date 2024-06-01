@@ -3,6 +3,6 @@
     :field="$field"
 >
     <div x-data="{ state: $wire.$entangle('{{ $getStatePath() }}') }">
-        <!-- Interact with the `state` property in Alpine.js -->
+        This is the Slider
     </div>
 </x-dynamic-component>
