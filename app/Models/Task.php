@@ -28,6 +28,7 @@ class Task extends Model implements Sortable
             'progress',
             'status',
             'order_column',
+            'is_done',
             'team'
             // 'preferences',
             // 'name',
@@ -37,7 +38,8 @@ class Task extends Model implements Sortable
         'users' => AsArrayObject::class, // casting the JSON database column
         'teams' => 'collection',
         'updated_at' => 'datetime:m-d-Y h:i A',
-        'created_at' => 'datetime:m-d-Y h:i A'
+        'created_at' => 'datetime:m-d-Y h:i A',
+
     ];
     // public function user_tasks()
     // {
@@ -74,7 +76,8 @@ class Task extends Model implements Sortable
             'order_column',
             'urgent',
             'team',
-            'user'])
+            'user',
+            'is_done'])
     
         
         ;

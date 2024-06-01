@@ -23,6 +23,7 @@ return new class extends Migration
             $table->dateTime('due_date');
             $table->tinyInteger('progress')->default(0);
             $table->string('status')->default('todo');
+            $table->string('is_done')->default('pending');
             $table->integer('order_column')->default(0);
             $table->timestamps();
         });

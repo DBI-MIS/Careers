@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Enums\CompletedStatus;
 use App\Enums\TaskStatus;
 use App\Filament\Resources\TaskResource;
 use App\Models\Task;
@@ -15,10 +16,14 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Support\Enums\Alignment;
+use Filament\Support\Enums\IconPosition;
+use Filament\Support\Enums\IconSize;
 use Guava\FilamentClusters\Forms\Cluster;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use JaOcero\RadioDeck\Forms\Components\RadioDeck;
 use Mokhosh\FilamentKanban\Pages\KanbanBoard;
 use Parallax\FilamentComments\Actions\CommentsAction;
 use Parallax\FilamentComments\Models\Traits\HasFilamentComments;
@@ -49,31 +54,43 @@ class AllTasksBoard extends KanbanBoard
     }
 
 
-    protected static ?string $navigationIcon = 'heroicon-s-squares-2x2';
-    // protected ?string $subheading = 'List of All Tasks accross all board';
+    protected static ?string $navigationIcon = 'heroicon-s-clipboard-document-list';
+    protected ?string $subheading = 'Mark as Done to remove from board.';
 
     protected static string $model = Task::class;
 
     protected static string $statusEnum = TaskStatus::class;
 
+    protected static ?int $navigationSort = 1;
+
     protected static ?string $navigationGroup = 'Board';
     protected static ?string $title = 'All Tasks';
 
 
+    // protected function records(): Collection
+    // {
+
+    //     return Task::ordered()->get();
+
+    // }
+
     protected function records(): Collection
     {
+        // Get current date and the weekday number (0 for Sunday, 1 for Monday, etc.)
+        $currentDate = Carbon::now();
+        $currentWeekday = $currentDate->dayOfWeek;
 
-        return Task::ordered()->get();
+        // Determine the start and end of the current week (Monday to Friday)
+        $startOfWeek = $currentDate->copy()->startOfWeek(Carbon::MONDAY);
+        $endOfWeek = $currentDate->copy()->startOfWeek(Carbon::MONDAY)->addDays(7);
 
-        //     $oneWeekAgo = Carbon::now()->subWeek();
-
-        // return Task::ordered()
-        //            ->where('progress', '<', 100)
-        //            ->where('due_date', '>', $oneWeekAgo)
-        //            ->get();
-
-
+        // Retrieve tasks created from Monday to Friday and with status not equal to 'done'
+        return Task::whereBetween('created_at', [$startOfWeek, $endOfWeek])
+                    ->ordered()
+                    ->get();
     }
+
+
 
     public function onStatusChanged(int $recordId, string $status, array $fromOrderedIds, array $toOrderedIds): void
     {
@@ -91,6 +108,27 @@ class AllTasksBoard extends KanbanBoard
     protected function getEditModalFormSchema(null|int $recordId): array
     {
         return [
+            RadioDeck::make('is_done')
+            ->label('Status')
+                        ->options(CompletedStatus::class)
+                        ->descriptions(CompletedStatus::class)
+                        ->icons(CompletedStatus::class)
+                        ->required()
+                        ->iconSize(IconSize::Small)
+                        ->iconPosition(IconPosition::Before)
+                        ->alignment(Alignment::Center)
+                        ->extraCardsAttributes([
+                            'class' => 'rounded-md'
+                        ])
+                        ->extraOptionsAttributes([
+                            'class' => 'text-sm leading-none w-full flex flex-col items-center justify-center p-1'
+                        ])
+                        ->extraDescriptionsAttributes([ 
+                            'class' => 'text-xs font-light text-center'
+                        ])
+                        ->color('primary')
+                        ->padding('px-3 px-3') 
+                        ->columns(3),
 
             Section::make('Task Details')
                 ->description(' ')
@@ -99,11 +137,11 @@ class AllTasksBoard extends KanbanBoard
                     Toggle::make('urgent')
                         ->required()
                         ->columnSpan(1),
+                       
                     TextInput::make('progress')
                         ->label('')
                         ->prefix('Progress')
                         ->numeric()
-                        ->step(25)
                         ->maxValue(100)
                         ->minValue(0)
                         ->suffix('%')
@@ -116,7 +154,6 @@ class AllTasksBoard extends KanbanBoard
                             ->required()
                             ->columnSpan(2),
                         Textarea::make('description')
-                            ->required()
                             ->rows('3')
                             ->columnSpan(2),
                     ])
@@ -182,6 +219,7 @@ class AllTasksBoard extends KanbanBoard
             'due_date' => $data['due_date'],
             'progress' => $data['progress'],
             'user_id' => $data['user_id'],
+            'is_done' => $data['is_done'],
         ]);
     }
 

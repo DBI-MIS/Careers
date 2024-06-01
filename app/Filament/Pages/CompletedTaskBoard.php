@@ -3,53 +3,53 @@
 namespace App\Filament\Pages;
 
 use App\Enums\CompletedStatus;
+use App\Enums\CompletedTaskStatus;
+use App\Enums\Status;
 use App\Enums\TaskStatus;
 use App\Models\Task;
-use App\Models\User;
 use Carbon\Carbon;
 use Filament\Actions\CreateAction;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Components\ViewField;
-use Filament\Http\Middleware\Authenticate;
-use Filament\Support\Enums\Alignment;
-use Filament\Support\Enums\IconPosition;
-use Filament\Support\Enums\IconSize;
 use Guava\FilamentClusters\Forms\Cluster;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-use JaOcero\RadioDeck\Forms\Components\RadioDeck;
 use Mokhosh\FilamentKanban\Pages\KanbanBoard;
-use Spatie\Activitylog\Contracts\Activity;
+use JaOcero\RadioDeck\Forms\Components\RadioDeck;
+use Filament\Support\Enums\IconSize;
+use Filament\Support\Enums\Alignment;
+use Filament\Support\Enums\IconPosition;
 
-class TasksKanbanBoard extends KanbanBoard
+
+class CompletedTaskBoard extends KanbanBoard
 {
-    protected static ?string $navigationIcon = 'heroicon-s-clipboard-document';
+    protected static ?string $navigationIcon = 'heroicon-s-clipboard-document-check';
 
-    protected static string $view = 'mytasks-kanban.kanban-board';
+    protected static string $view = 'completedtasks-kanban.kanban-board';
 
-    protected static string $headerView = 'mytasks-kanban.kanban-header';
+    protected static string $headerView = 'completedtasks-kanban.kanban-header';
 
-    protected static string $recordView = 'mytasks-kanban.kanban-record';
+    protected static string $recordView = 'completedtasks-kanban.kanban-record';
 
-    protected static string $statusView = 'mytasks-kanban.kanban-status';
+    protected static string $statusView = 'completedtasks-kanban.kanban-status';
+
+    protected static string $recordStatusAttribute = 'is_done';
 
     protected static string $model = Task::class;
 
-    protected static string $statusEnum = TaskStatus::class;
+    protected static string $statusEnum = CompletedStatus::class;
 
-    protected ?string $subheading = 'Mark as Done to remove from board.';
-    protected static ?int $navigationSort = 2;
+    protected ?string $subheading = 'Completed Tasks.';
 
     protected static ?string $navigationGroup = 'Board';
-    protected static ?string $title = 'My Tasks';
+    protected static ?string $title = 'My Completed Tasks';
+    protected static ?int $navigationSort = 3;
+
+    
 
     // protected function records(): Collection
     // {
@@ -79,7 +79,7 @@ class TasksKanbanBoard extends KanbanBoard
         // and either belong to a team with the current authenticated user or are directly assigned to the current authenticated user
         return Task::ordered()
                     ->whereBetween('created_at', [$startOfWeek, $endOfWeek])
-                    ->where('is_done', '!=', 'done')
+                    ->where('is_done','!=', 'undone')
                     ->where(function ($query) {
                         $query->whereHas('team', function ($query) {
                             $query->where('user_id', auth()->id());
@@ -93,7 +93,7 @@ class TasksKanbanBoard extends KanbanBoard
     {
 
 
-        Task::find($recordId)->update(['status' => $status]);
+        Task::find($recordId)->update(['is_done' => $status]);
         Task::setNewOrder($toOrderedIds);
         // Log::info($message);
     }
@@ -128,9 +128,11 @@ class TasksKanbanBoard extends KanbanBoard
                         ->color('primary')
                         ->padding('px-3 px-3') 
                         ->columns(3),
+           
             Section::make('Task Details')
                 ->description(' ')
                 ->schema([
+
                     Toggle::make('urgent')
                         ->required()
                         ->columnSpan(1),
@@ -219,67 +221,67 @@ class TasksKanbanBoard extends KanbanBoard
         ]);
     }
 
-    protected function getHeaderActions(): array
-    {
-        return [
-            CreateAction::make()
-                ->model(Task::class)
-                ->form([
-                    Toggle::make('urgent')
-                        ->required(),
-                    Cluster::make([
-                        TextInput::make('title')
-                            ->label('Task Name')
-                            ->required()
-                            ->columnSpan(1),
-                        Textarea::make('description')
-                            ->required()
-                            ->rows('3')
-                            ->columnSpan(2),
-                    ])
-                        ->label('Task Name')
-                        ->hint('')
-                        ->helperText('*Description can be Blank')->columns(1),
+    // protected function getHeaderActions(): array
+    // {
+    //     return [
+    //         CreateAction::make()
+    //             ->model(Task::class)
+    //             ->form([
+    //                 Toggle::make('urgent')
+    //                     ->required(),
+    //                 Cluster::make([
+    //                     TextInput::make('title')
+    //                         ->label('Task Name')
+    //                         ->required()
+    //                         ->columnSpan(1),
+    //                     Textarea::make('description')
+    //                         ->required()
+    //                         ->rows('3')
+    //                         ->columnSpan(2),
+    //                 ])
+    //                     ->label('Task Name')
+    //                     ->hint('')
+    //                     ->helperText('*Description can be Blank')->columns(1),
 
-                    Cluster::make([
-
-
-                        TextInput::make('project')
-                            ->label('Project')
-                            ->nullable(),
-                        DatePicker::make('due_date')
-                            ->label('Due Date')
-                            ->date('D - M d, Y')
-                            ->nullable(),
-
-                    ])
-                        ->label('Project')
-                        ->hint('Due Date')
-                        ->columns(2),
-
-                    Cluster::make([
-                        Select::make('user_id')
-                            ->default(auth()->id())
-                            ->relationship('user', 'name')
-                            ->required()
-                            ->columnSpan(1),
-                        Select::make('team')
-                            ->label('Assigned User')
-                            ->relationship('team', 'name')
-                            ->multiple()
-                            ->nullable()
-                            ->searchable()
-                            ->preload()
-                            ->columnSpan(2),
-                    ])
-                        ->label('User')
-                        ->hint('Assigned User/s')
-                        ->helperText(' ')->columns(3),
+    //                 Cluster::make([
 
 
-                ]),
-        ];
-    }
+    //                     TextInput::make('project')
+    //                         ->label('Project')
+    //                         ->nullable(),
+    //                     DatePicker::make('due_date')
+    //                         ->label('Due Date')
+    //                         ->date('D - M d, Y')
+    //                         ->nullable(),
+
+    //                 ])
+    //                     ->label('Project')
+    //                     ->hint('Due Date')
+    //                     ->columns(2),
+
+    //                 Cluster::make([
+    //                     Select::make('user_id')
+    //                         ->default(auth()->id())
+    //                         ->relationship('user', 'name')
+    //                         ->required()
+    //                         ->columnSpan(1),
+    //                     Select::make('team')
+    //                         ->label('Assigned User')
+    //                         ->relationship('team', 'name')
+    //                         ->multiple()
+    //                         ->nullable()
+    //                         ->searchable()
+    //                         ->preload()
+    //                         ->columnSpan(2),
+    //                 ])
+    //                     ->label('User')
+    //                     ->hint('Assigned User/s')
+    //                     ->helperText(' ')->columns(3),
+
+
+    //             ]),
+    //     ];
+    // }
 
     protected function additionalRecordData(Model $record): Collection
     {
@@ -287,8 +289,8 @@ class TasksKanbanBoard extends KanbanBoard
         return collect([
             'urgent' => $record->urgent,
             'progress' => $record->progress,
-            // 'owner' => $record->user->name,
             'description' => $record->description,
+            'is_done' => $record->is_done,
 
         ]);
     }

@@ -17,6 +17,7 @@
         "filament/widgets": "^3.2",
         "guava/filament-clusters": "^1.4",
         "guzzlehttp/guzzle": "^7.8",
+        "jaocero/radio-deck": "^1.2",
         "joaopaulolndev/filament-general-settings": "^1.0",
         "laravel/framework": "^11.0",
         "laravel/jetstream": "^5.0",

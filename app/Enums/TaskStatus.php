@@ -9,8 +9,8 @@ enum TaskStatus: string
     use IsKanbanStatus;
 
     case Todo = 'todo';
-    case OnGoing = 'on_going';
-    case Done = 'done';
+    case OnGoing = 'ongoing';
+    case ForReview = 'review';
 
     public function getTitle(): string
     {
