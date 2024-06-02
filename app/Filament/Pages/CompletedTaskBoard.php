@@ -78,8 +78,10 @@ class CompletedTaskBoard extends KanbanBoard
         // Retrieve tasks created from Monday to Friday with status not equal to 'done'
         // and either belong to a team with the current authenticated user or are directly assigned to the current authenticated user
         return Task::ordered()
-                    ->whereBetween('created_at', [$startOfWeek, $endOfWeek])
-                    ->where('is_done','!=', 'undone')
+        ->where(function ($query) use ($startOfWeek, $endOfWeek) {
+            $query->where('is_done', '!=', 'undone')
+                  ->orWhereBetween('created_at', [$startOfWeek, $endOfWeek]);
+        })
                     ->where(function ($query) {
                         $query->whereHas('team', function ($query) {
                             $query->where('user_id', auth()->id());
@@ -194,6 +196,48 @@ class CompletedTaskBoard extends KanbanBoard
                         ->label('User')
                         ->hint('Assigned User/s')
                         ->helperText(' ')->columnSpan(3),
+                        Cluster::make([
+                            Select::make('text_color')
+                                    ->default('text-white')
+                                    ->required()
+                                    ->options([
+                                        'text-white' => 'white',
+                                        'text-black' => 'black',
+                                        'text-yellow-400' => 'yellow',
+                                        'text-red-600' => 'red',
+                                        'text-sky-600' => 'blue',
+                                        'text-lime-600' => 'green',
+                                    ])
+                                    ->label(__('Text Color'))
+                                    ->columnSpan(1),
+
+                                Select::make('bg_color')
+                                    ->default('bg-sky-400')
+                                    ->required()
+                                    ->options([
+                                        'bg-white' => 'white',
+                                        'bg-black' => 'black',
+                                        'bg-sky-400' => 'blue',
+                                        'bg-sky-800' => 'dark blue',
+                                        'bg-red-400' => 'red',
+                                        'bg-orange-400' => 'orange',
+                                        'bg-yellow-400' => 'yellow',
+                                        'bg-lime-400' => 'lime',
+                                        'bg-green-400' => 'green',
+                                        'bg-teal-400' => 'teal',
+                                        'bg-cyan-400' => 'cyan',
+                                        'bg-violet-400' => 'violet',
+                                        'bg-fuchsia-400' => 'fucshia',
+                                        'bg-pink-400' => 'pink',
+                                        'bg-rose-400' => 'rose',
+                                    ])
+                                    
+                                    ->label(__('Background Color'))
+                                    ->columnSpan(1),
+                        ])
+                            ->label('Customization - Text Color | BG Color')
+                            ->hint('Default is White Text & Blue Background')
+                            ->helperText(' ')->columnSpan(3),
 
                 ])->columns(3),
         ];
@@ -218,6 +262,9 @@ class CompletedTaskBoard extends KanbanBoard
             'progress' => $data['progress'],
             'user_id' => $data['user_id'],
             'is_done' => $data['is_done'],
+            'text_color' => $data['text_color'],
+            'bg_color' => $data['bg_color'],
+
         ]);
     }
 
@@ -291,6 +338,8 @@ class CompletedTaskBoard extends KanbanBoard
             'progress' => $record->progress,
             'description' => $record->description,
             'is_done' => $record->is_done,
+            'text_color' => $record->text_color,
+            'bg_color' => $record->bg_color,
 
         ]);
     }

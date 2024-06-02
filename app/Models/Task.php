@@ -29,7 +29,9 @@ class Task extends Model implements Sortable
             'status',
             'order_column',
             'is_done',
-            'team'
+            'team',
+            'text_color',
+            'bg_color',
             // 'preferences',
             // 'name',
     ];
@@ -77,7 +79,9 @@ class Task extends Model implements Sortable
             'urgent',
             'team',
             'user',
-            'is_done'])
+            'is_done',
+            'text_color',
+            'bg_color'])
     
         
         ;
@@ -100,10 +104,10 @@ class Task extends Model implements Sortable
         return Str::limit(strip_tags($this->description), 100);
     }
 
-    public function scopeOrdered($query)
-    {
-        return $query->orderBy('due_date', 'desc');
-    }
+    // public function scopeOrdered($query)
+    // {
+    //     return $query->orderBy('due_date', 'desc');
+    // }
 
     
 

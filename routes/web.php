@@ -30,7 +30,7 @@ Route::post('/post_job', [ResponseController::class, 'post_job']);
 // // Route::get('/job/create', CreateResponse::class);
 
 
-Route::get('/counter', Counter::class);
+// Route::get('/counter', Counter::class);
 
 Route::middleware([
     'auth:sanctum',

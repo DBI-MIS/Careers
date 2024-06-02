@@ -19,8 +19,13 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Outerweb\FilamentSettings\Filament\Plugins\FilamentSettingsPlugin;
 use App\Filament\Pages\Settings\Settings;
+use Edwink\FilamentUserActivity\FilamentUserActivityPlugin;
+use Edwink\FilamentUserActivity\Http\Middleware\RecordUserActivity;
 use Filament\Support\Enums\MaxWidth;
 use Joaopaulolndev\FilamentGeneralSettings\FilamentGeneralSettingsPlugin;
+use Saade\FilamentFullCalendar\FilamentFullCalendarPlugin;
+use Swis\Filament\Backgrounds\FilamentBackgroundsPlugin;
+use Swis\Filament\Backgrounds\ImageProviders\MyImages;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -59,9 +64,9 @@ class AdminPanelProvider extends PanelProvider
             // ->widgets([
             //     PostOverview::class,
             //     ResponsesOverview::class,
-                // Widgets\AccountWidget::class,
-                // Widgets\FilamentInfoWidget::class,
-                
+            // Widgets\AccountWidget::class,
+            // Widgets\FilamentInfoWidget::class,
+
             // ])
             ->middleware([
                 EncryptCookies::class,
@@ -73,22 +78,33 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                RecordUserActivity::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
             ])
             ->plugins([
                 FilamentGeneralSettingsPlugin::make()
-        ->canAccess(fn() => auth()->user()->id === 1)
-        ->setSort(3)
-        ->setIcon('heroicon-o-cog')
-        ->setNavigationGroup('Settings')
-        ->setTitle('General Settings')
-        ->setNavigationLabel('General Settings'),
-                    ])
-                    // ->resources([
-                    //     config('filament-logger.activity_resource')
-                    // ])
-                    ;               
+                    ->canAccess(fn () => auth()->user()->id === 1)
+                    ->setSort(3)
+                    ->setIcon('heroicon-o-cog')
+                    ->setNavigationGroup('Settings')
+                    ->setTitle('General Settings')
+                    ->setNavigationLabel('General Settings'),
+                FilamentUserActivityPlugin::make(),
+                FilamentBackgroundsPlugin::make()
+                ->showAttribution(false)
+                ->remember(5000)
+                // ->imageProvider(
+                //     MyImages::make()
+                //         ->directory('images/backgrounds')
+                // )
+                ,
+                FilamentFullCalendarPlugin::make()
+            ])
+            // ->resources([
+            //     config('filament-logger.activity_resource')
+            // ])
+        ;
     }
 }

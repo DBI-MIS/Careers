@@ -11,8 +11,8 @@ enum CompletedStatus: string implements HasLabel, HasDescriptions, HasIcons
 {
     use IsKanbanStatus;
 
-    case Done = 'done';
     case PendingReview = 'pending';
+    case Done = 'done';
     case Undone = 'undone';
     
 

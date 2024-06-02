@@ -25,6 +25,8 @@ return new class extends Migration
             $table->string('status')->default('todo');
             $table->string('is_done')->default('pending');
             $table->integer('order_column')->default(0);
+            $table->string('text_color')->default('text-white');
+            $table->string('bg_color')->default('bg-sky-400');
             $table->timestamps();
         });
 

@@ -5,10 +5,12 @@ namespace App\Filament\Pages;
 use App\Filament\Resources\PostResource\Widgets\PostOverview;
 use App\Filament\Resources\ResponseResource\Widgets\ResponsesOverview;
 use App\Filament\Widgets;
+use App\Filament\Widgets\CalendarWidget;
 use App\Filament\Widgets\DashboardOverview;
 use App\Filament\Widgets\LatestResponseOverview;
 use Filament\Facades\Filament;
 use Filament\Pages\Page;
+use Saade\FilamentFullCalendar\Widgets\FullCalendarWidget;
 
 class Dashboard extends Page
 {
@@ -25,6 +27,8 @@ protected function getHeaderWidgets(): array
     return [
         // Widgets\AccountWidget::class,
         DashboardOverview::class,
+        
+        // CalendarWidget::class,
         LatestResponseOverview::class,
         
     ];

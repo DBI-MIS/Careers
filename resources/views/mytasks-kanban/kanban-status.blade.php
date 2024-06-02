@@ -1,13 +1,13 @@
+
 @props(['status'])
 
-<div class="w-full mb-5 flex flex-col">
+<div class="max-w-[500px] flex-1">
     @include(static::$headerView)
-    <div
-        data-status-id="{{ $status['id'] }}"
-        class="flex flex-col flex-1 gap-2 p-3  dark:bg-gray-800 rounded-xl"
-    >
-    
-        @foreach($status['records'] as $record)
+    <div data-status-id="{{ $status['id'] }}" class="flex-wrap gap-x-2 gap-y-3 mb-7 mt-7">
+
+
+
+        @foreach ($status['records'] as $record)
             @include(static::$recordView)
         @endforeach
     </div>

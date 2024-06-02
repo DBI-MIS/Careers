@@ -7,6 +7,7 @@ export default {
         './resources/views/filament/**/*.blade.php',
         './resources/views/alltasks-kanban/**/*.blade.php',
         './resources/views/mytasks-kanban/**/*.blade.php',
+        './resources/views/mynotes-kanban/**/*.blade.php',
         './resources/views/vendor/**/*.blade.php',
         './vendor/filament/**/*.blade.php',
         './vendor/jaocero/radio-deck/resources/views/**/*.blade.php',

@@ -15,6 +15,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Activitylog\Traits\CausesActivity;
+use Edwink\FilamentUserActivity\Traits\UserActivityTrait;
 
 class User extends Authenticatable implements FilamentUser
 {
@@ -24,6 +25,7 @@ class User extends Authenticatable implements FilamentUser
     use Notifiable;
     use TwoFactorAuthenticatable;
     use CausesActivity;
+    use UserActivityTrait;
 
     const ROLE_ADMIN = 'ADMIN';
     const ROLE_EDITOR = 'EDITOR';

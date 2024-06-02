@@ -22,7 +22,7 @@ class TaskFactory extends Factory
             'urgent' => fake()->boolean(),
             'project' => fake()->word(),
             'user_id' => fake()->randomNumber(1,10),
-            'due_date' => fake()->dateTimeBetween(now(), now()->addDays(30)),
+            'due_date' => fake()->dateTimeBetween(now()->subDays(30), now()->addDays(30)),
             'progress' => fake()->numberBetween(0, 100),
         ];
     }

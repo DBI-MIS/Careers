@@ -1,15 +1,22 @@
 <x-filament-panels::page>
-    <div x-data wire:ignore.self class="grid grid-col-2 gap-x-2">
-        @foreach($statuses as $status)
-            @include(static::$statusView)
-        @endforeach
-
-        <div wire:ignore>
-            @include(static::$scriptsView)
+    <span class="text-slate-200 text-[12px]">Drag this sH.***</span>
+        <div class="">
+            <div x-data wire:ignore.self >
+                    @foreach($statuses as $status)
+              
+        
+                    @include(static::$statusView)
+                    <hr>
+                    @endforeach
+                
+        
+                <div wire:ignore>
+                    @include(static::$scriptsView)
+                </div>
+            </div>
         </div>
-    </div>
-
-    @unless($disableEditModal)
-        <x-filament-kanban::edit-record-modal/>
-    @endunless
-</x-filament-panels::page>
+        
+            @unless($disableEditModal)
+                <x-filament-kanban::edit-record-modal/>
+            @endunless
+        </x-filament-panels::page>
