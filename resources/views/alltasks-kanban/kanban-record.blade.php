@@ -1,3 +1,5 @@
+@props(['record'])
+
 <div id="{{ $record->getKey() }}" wire:click="recordClicked('{{ $record->getKey() }}', {{ @json_encode($record) }})"
     class="record flex flex-col {{ $record->bg_color }} dark:bg-gray-700 rounded-md p-4 cursor-grab  dark:text-gray-200 border-l-8 shadow-md border-slate-300 
     {{ $record->text_color }} justify-between mb-3"
@@ -9,7 +11,7 @@
                 $el.classList.add('{{ $record->bg_color }}', 'dark:bg-gray-700')
             }, 3000)
         " @endif>
-
+       
     <div class="flex flex-col justify-between mb-2">
 
         <div class="flex flex-row items-center gap-x-2">
@@ -65,4 +67,8 @@
         Updated {{ $record->updated_at->diffForHumans() }}
 
     </div>
+
+    
+
+    <button wire:click="deleteRecord('{{ $record->id }}')" class="delete-btn">Delete</button>
 </div>

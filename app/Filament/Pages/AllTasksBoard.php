@@ -8,17 +8,20 @@ use App\Filament\Resources\TaskResource;
 use App\Models\Task;
 use App\Models\User;
 use Carbon\Carbon;
-use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Resources\Pages\Concerns\InteractsWithRecord;
 use Filament\Support\Enums\Alignment;
 use Filament\Support\Enums\IconPosition;
 use Filament\Support\Enums\IconSize;
+use Filament\Tables\Actions\DeleteAction as ActionsDeleteAction;
 use Guava\FilamentClusters\Forms\Cluster;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -27,12 +30,15 @@ use JaOcero\RadioDeck\Forms\Components\RadioDeck;
 use Mokhosh\FilamentKanban\Pages\KanbanBoard;
 use Parallax\FilamentComments\Actions\CommentsAction;
 use Parallax\FilamentComments\Models\Traits\HasFilamentComments;
+use Filament\Forms\Components\Actions;
+use Filament\Forms\Components\Actions\Action;
 use SearchableTrait;
 
 class AllTasksBoard extends KanbanBoard
 {
 
     use HasFilamentComments;
+
 
     protected static string $view = 'alltasks-kanban.kanban-board';
 
@@ -91,7 +97,6 @@ class AllTasksBoard extends KanbanBoard
     }
 
 
-
     public function onStatusChanged(int $recordId, string $status, array $fromOrderedIds, array $toOrderedIds): void
     {
         Task::find($recordId)->update(['status' => $status]);
@@ -105,9 +110,10 @@ class AllTasksBoard extends KanbanBoard
     }
 
 
-    protected function getEditModalFormSchema(null|int $recordId): array
+    protected function getEditModalFormSchema(null | int $recordId): array
     {
         return [
+           
             RadioDeck::make('is_done')
             ->label('Status')
                         ->options(CompletedStatus::class)
@@ -241,11 +247,39 @@ class AllTasksBoard extends KanbanBoard
                         
 
                 ])->columns(3),
+ 
+                
+
+                
 
         ];
     }
 
+//     public function deleteTask($recordId)
+// {
+//     $task = Task::find($recordId);
+//     if ($task) {
+//         $task->delete();
+//         session()->flash('message', 'Task deleted successfully.');
+//     } else {
+//         session()->flash('error', 'Task not found.');
+//     }
 
+//     return redirect()->route('tasks.index');
+// }
+
+
+                // Actions::make([
+                //     Action::make('delete')
+                //         ->icon('heroicon-m-x-mark')
+                //         ->color('danger')
+                //         ->requiresConfirmation()
+                //         ->action(function () use ($recordId) {
+                //             static::$model::find($recordId)->delete();
+        
+                //             $this->dispatch('close-modal', id: 'kanban--edit-record-modal');
+                //         }),
+                // ]),
 
     protected function getEditModalRecordData(int $recordId, array $data): array
     {
@@ -266,6 +300,7 @@ class AllTasksBoard extends KanbanBoard
             'is_done' => $data['is_done'],
             'text_color' => $data['text_color'],
             'bg_color' => $data['bg_color'],
+            'team' => $data['team'],
 
         ]);
     }
@@ -370,6 +405,7 @@ class AllTasksBoard extends KanbanBoard
                         
 
                 ]),
+                
             // Parallax\FilamentComments\Actions\CommentsAction::make(),
         ];
     }
@@ -378,6 +414,7 @@ class AllTasksBoard extends KanbanBoard
     {
 
         return collect([
+            
             'urgent' => $record->urgent,
             'progress' => $record->progress,
             // 'owner' => $record->user->name,
@@ -388,4 +425,12 @@ class AllTasksBoard extends KanbanBoard
 
         ]);
     }
+
+    public function deleteRecord($recordId)
+{
+    Task::destroy($recordId);
+    
+
+}
+
 }

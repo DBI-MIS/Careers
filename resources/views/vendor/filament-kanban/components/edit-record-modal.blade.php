@@ -13,6 +13,7 @@
                 {{$this->getEditModalSaveButtonLabel()}}
             </x-filament::button>
 
+
             <x-filament::button color="gray" x-on:click="isOpen = false">
                 {{$this->getEditModalCancelButtonLabel()}}
             </x-filament::button>

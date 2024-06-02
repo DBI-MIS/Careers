@@ -14,6 +14,7 @@ class ViewTask extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
+            Actions\DeleteAction::make(),
             // Actions\EditAction::make(),
             CommentsAction::make(),
         ];
