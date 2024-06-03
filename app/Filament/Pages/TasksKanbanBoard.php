@@ -15,6 +15,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Components\ViewField;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Support\Enums\Alignment;
@@ -45,7 +46,7 @@ class TasksKanbanBoard extends KanbanBoard
 
     protected static string $statusEnum = TaskStatus::class;
 
-    protected ?string $subheading = 'Mark as Done to remove from board.';
+    protected ?string $subheading = 'Mark as Done or Delete to remove from board.';
     protected static ?int $navigationSort = 2;
 
     protected static ?string $navigationGroup = 'Board';
@@ -236,10 +237,25 @@ class TasksKanbanBoard extends KanbanBoard
                                     
                                     ->label(__('Background Color'))
                                     ->columnSpan(1),
+                                    
                         ])
                             ->label('Customization - Text Color | BG Color')
                             ->hint('Default is White Text & Blue Background')
                             ->helperText(' ')->columnSpan(3),
+                            ToggleButtons::make('status')
+                            ->label('Set')->inline()->grouped()
+                            ->options([
+                                'todo' => 'Back to Todo',
+                                'ongoing' => 'On-Going',
+                                'review' => 'For Review',
+                                'deleted' => 'Delete',
+                            ])
+                            ->colors([
+                                'todo' => 'info',
+                                'ongoing' => 'warning',
+                                'review' => 'success',
+                                'deleted' => 'danger',
+                            ])
 
                 ])->columns(3),
         ];
@@ -266,6 +282,7 @@ class TasksKanbanBoard extends KanbanBoard
             'is_done' => $data['is_done'],
             'text_color' => $data['text_color'],
             'bg_color' => $data['bg_color'],
+            'status' => $data['status'],
 
         ]);
     }

@@ -15,6 +15,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\ToggleButtons;
 use Guava\FilamentClusters\Forms\Cluster;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -238,6 +239,21 @@ class CompletedTaskBoard extends KanbanBoard
                             ->label('Customization - Text Color | BG Color')
                             ->hint('Default is White Text & Blue Background')
                             ->helperText(' ')->columnSpan(3),
+                            ToggleButtons::make('is_done')
+                            ->label('Set')->inline()->grouped()
+                            ->options([
+                                'pending' => 'Back to Review',
+                                'done' => 'Done',
+                                'undone' => 'Undone',
+                                'deleted' => 'Delete',
+                            ])
+                            ->colors([
+                                'pending' => 'warning',
+                                'done' => 'success',
+                                'undone' => 'info',
+                                'deleted' => 'danger',
+                            ])
+                            
 
                 ])->columns(3),
         ];

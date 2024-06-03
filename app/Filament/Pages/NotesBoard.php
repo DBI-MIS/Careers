@@ -85,12 +85,27 @@ class NotesBoard extends KanbanBoard
                             // ->disabled()
                             // ->relationship('user', 'name')
                             ->required(),
-                        Radio::make('pin')->inline()
+                        // Radio::make('pin')->inline()
+                        //     ->label('Pin to Top')
+                        //     ->default('note')
+                        //     ->options([
+                        //         'pinned' => 'Yes',
+                        //         'note' => 'No',
+                        //     ]),
+                            ToggleButtons::make('pin')
                             ->label('Pin to Top')
+                            ->inline()
                             ->default('note')
+                            ->grouped()
                             ->options([
                                 'pinned' => 'Yes',
                                 'note' => 'No',
+                                'deleted' => 'Delete',
+                            ])
+                            ->colors([
+                                'pinned' => 'success',
+                                'note' => 'warning',
+                                'deleted' => 'danger',
                             ])
 
 
@@ -138,6 +153,9 @@ class NotesBoard extends KanbanBoard
                             ])
                             
                             ->label(__('Background Color')),
+
+                           
+                            
                         
 
                     ])->columnSpan(1),
@@ -162,6 +180,8 @@ class NotesBoard extends KanbanBoard
             // 'user_id' => $data['user_id'],
             'text_color' => $data['text_color'],
             'bg_color' => $data['bg_color'],
+            'pin' => $data['pin'],
+
 
         ]);
     }

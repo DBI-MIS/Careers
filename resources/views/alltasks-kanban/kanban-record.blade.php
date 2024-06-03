@@ -70,5 +70,5 @@
 
     
 
-    <button wire:click="deleteRecord('{{ $record->id }}')" class="delete-btn">Delete</button>
+    {{-- <button wire:click="deleteRecord('{{ $record->id }}')" class="delete-btn">Delete</button> --}}
 </div>

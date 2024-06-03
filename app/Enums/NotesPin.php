@@ -10,6 +10,15 @@ enum NotesPin: string
 
     case Pinned = 'pinned';
     case Note = 'note';
+    case Delete = 'deleted';
+
+    public static function kanbanCases(): array
+    {
+        return [
+            static::Pinned,
+            static::Note,
+        ];
+    }
 
     public function getTitle(): string
     {

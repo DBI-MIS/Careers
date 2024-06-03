@@ -31,6 +31,15 @@ enum CompletedStatus: string implements HasLabel, HasDescriptions, HasIcons
         };
     }
 
+    public static function kanbanCases(): array
+    {
+        return [
+            static::PendingReview,
+            static::Done,
+            static::Undone,
+        ];
+    }
+
     public function getDescriptions(): ?string
     {
         return match ($this) {
