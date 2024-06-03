@@ -6,7 +6,7 @@
                 <span class="mr-1 text-xs">Posted By: {{ $post->author->name }}</span>
                 <span class="text-gray-500 text-xs">{{ $post->date_posted->diffForHumans()}}</span>
             </div>
-            <h2 class="text-xl font-bold text-gray-900">
+            <h2 class="text-2xl font-bold text-gray-900">
                 <a wire:navigate href="{{ route('posts.show', $post->slug) }}" >
                     {{ $post->title }}
                 </a>

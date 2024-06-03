@@ -1,11 +1,11 @@
 <nav 
 x-data="{ mobileMenuIsOpen: false }" @click.away="mobileMenuIsOpen = false" 
-class="flex items-center mx-auto bg-white border-gray-200"
+class="flex items-center mx-auto border-gray-200"
 aria-label="DB Careers Nav">
     
 <div class="w-full flex flex-wrap items-center justify-between mx-auto">
     <div id="nav-left" class="flex items-center space-x-3 rtl:space-x-reverse">
-        <div class="text-gray-800 font-semibold">
+        <div class="text-slate-700 font-semibold">
             <a href="{{ route("home") }}">
             <x-application-mark />
             </a>

@@ -5,7 +5,7 @@
         <div class="w-full relative">
             <!-- Hero Video -->
             
-            <div class="absolute left-0 top-0 overflow-hidden -z-20 bg-gradient-to-r from-gray-900 via-gray-900 brightness-50">
+            <div class="absolute left-0 top-0 overflow-hidden -z-20 w-full bg-gradient-to-r from-sky-900 via-sky-200 brightness-50">
                 <video autoplay loop muted class="pointer-events-none object-cover">
                     <source src="https://dbiphils.com/AvpShort.webm" type="video/webm">
                 </video>
@@ -68,7 +68,7 @@
         <div class="mb-10 mt-2 sm:mt-4 md:mt-8 xl:mt-0 w-full">
             <div class="mb-16">
                 <hr>
-                <h2 class="my-2 sm:my-4 md:my-6 text-base md:text-lg xl:text-2xl text-gray-800 font-bold 2xl:text-white" animate-shake animate-infinite animate-ease-in>
+                <h2 class="my-2 sm:my-4 md:my-6 text-2xl md:text-3xl text-gray-800 font-bold 2xl:text-white" animate-shake animate-infinite animate-ease-in>
                     Featured Jobs</h2>
                 <div class="w-full">
                     <div class="grid grid-cols-2 gap-2">

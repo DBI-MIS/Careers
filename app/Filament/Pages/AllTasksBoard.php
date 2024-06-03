@@ -53,7 +53,7 @@ class AllTasksBoard extends KanbanBoard
     {
         $user = Auth::user();
 
-        if ($user && $user->isAdmin()) {
+        if ($user && $user->role === 'ADMIN') {
             return true;
         }
 
