@@ -77,6 +77,11 @@ class Post extends Model
         });
     }
 
+    public function scopeSearch($query, string $search = '')
+    {
+        $query->where('title', 'like', "%{$search}%");
+    }
+
     public function getExcerpt() 
     {
         return Str::limit(strip_tags($this->post_description), 200);

@@ -2,16 +2,12 @@
 
 namespace App\Livewire;
 
+use App\Models\Post;
 use Livewire\Component;
 
 class SearchBox extends Component
 {
-    public $search = '';
-
-    // public function updatedSearch ()
-    // {  
-    //     $this->dispatch('search', search : $this->search);
-    // }
+    public $search;
  
     public function update ()
     {  

@@ -24,16 +24,18 @@ class PostList extends Component
     public $category = '';
 
 
+
     public function setSort($sort)
     {
         $this->sort = ($sort === 'desc') ? 'desc' : 'asc';
-        $this->resetPage();
+        
     }
 
     #[On('search')]
     public function updateSearch($search)
     {
         $this->search = $search;
+        $this->resetPage();
     }
 
     public function clearFilters()
@@ -43,35 +45,19 @@ class PostList extends Component
         $this->resetPage();
     }
 
-    // #[Computed()]
-    // public function post()
-    // {
-    //     return Post::orderBy('date_posted', $this->sort)
-    //     // ->whereHas('categories', function($query)
-    //     // {
-    //     //     $query->where('slug', $this->category);
-    //     // })
-    //     ->when($this->activeCategory, function ($query)
-    //     {
-    //         $query->withCategory($this->category);
-    //     })
-    //     ->where('title','like',"%{$this->search}%")
-    //     ->paginate(5);
-    // }
 
     #[Computed()]
     public function posts()
     {
         return Post::orderBy('date_posted', $this->sort)->where('status',true)
-        // ->whereHas('categories', function($query)
-        // {
-        //     $query->where('slug', $this->category);
-        // })
+        // where('title','like',"%{$this->search}%")
+        
+
         ->when($this->activeCategory, function ($query)
         {
             $query->withCategory($this->category);
         })
-        ->where('title','like',"%{$this->search}%")
+        ->search($this->search)
         ->paginate(5);
     }
 
