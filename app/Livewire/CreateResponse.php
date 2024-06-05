@@ -84,7 +84,7 @@ class CreateResponse extends Component implements HasForms
     #[Validate('email', message:'Your email is invalid.')]
     public ?string $email_address;
     #[Validate('required', message:'Please fill out with your current address.')]
-    #[Validate('min:20', message:'Your current address format is invalid.')]
+    #[Validate('min:5', message:'Your current address format is invalid.')]
     public ?string $current_address;
     #[Validate('required', message:'Please attached your resume.')]
     #[Validate('file|mimes:pdf,doc,docx', message:'Your file must be in PDF or MS Word Format.')]
