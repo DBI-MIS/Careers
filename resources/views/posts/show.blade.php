@@ -97,7 +97,11 @@
                             Apply Now!
                         </x-filament::button>
                     </x-slot>
-                    <livewire:create-response :post_title="$post->id" :date_response="Carbon\Carbon::now()->format('M-d-Y')"/>
+                    {{-- @livewire('create-response' ) --}}
+                    <livewire:create-response 
+                    :post_title="$post->id"
+                    :date_response="Carbon\Carbon::now()->format('M-d-Y')"
+                    />
                 </x-filament::modal>
         </article>
 

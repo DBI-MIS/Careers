@@ -25,6 +25,7 @@
                     :textColor="$this->activeCategory->text_color" :bgColor="$this->activeCategory->bg_color">
                     {{ $this->activeCategory->title }}
                 </x-badge>
+             
             @endif
             @if ($search)
                 <span class="ml-2">

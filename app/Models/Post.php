@@ -77,7 +77,7 @@ class Post extends Model
         });
     }
 
-    public function scopeSearch($query, string $search = '')
+    public function scopeSearch($query, ?string $search = '')
     {
         $query->where('title', 'like', "%{$search}%");
     }

@@ -25,10 +25,7 @@ class Dashboard extends Page
 protected function getHeaderWidgets(): array
 {
     return [
-        // Widgets\AccountWidget::class,
         DashboardOverview::class,
-        
-        // CalendarWidget::class,
         LatestResponseOverview::class,
         
     ];

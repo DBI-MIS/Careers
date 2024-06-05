@@ -99,7 +99,7 @@ class AdminPanelProvider extends PanelProvider
                 //         ->directory('images/backgrounds')
                 // )
                 ,
-                FilamentFullCalendarPlugin::make()
+                // FilamentFullCalendarPlugin::make()
             ])
             // ->resources([
             //     config('filament-logger.activity_resource')

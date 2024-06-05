@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "dasundev/livewire-dropzone": "^1.2",
         "edwink/filament-user-activity": "^1.0",
         "eightynine/filament-excel-import": "^3.0",
         "filament/actions": "^3.2",

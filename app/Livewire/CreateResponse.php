@@ -14,6 +14,7 @@ use DateTime;
 use Filament\Actions\Action;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
+use Filament\Actions\CreateAction;
 use Filament\Forms\Components\BaseFileUpload;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\MarkdownEditor;
@@ -43,6 +44,7 @@ use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Pages\Concerns\InteractsWithFormActions;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\HtmlString;
@@ -52,23 +54,12 @@ use function Livewire\store;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Renderless;
 
-class CreateResponse extends Component implements HasForms
+class CreateResponse extends Component implements HasForms, HasActions
 {
+
+    use InteractsWithActions;
     use InteractsWithForms;
     use Notifiable;
-    
-
-    // protected $fillable = [
-    //     'post_id',
-    //     'full_name',
-    //     'date_response',
-    //     'contact',
-    //     'email_address',
-    //     'current_address',
-    //     'attachment',
-    //     'review',
-    //     'status',
-    // ];
 
     // public ?array $data = [];
     #[Locked]
@@ -82,35 +73,32 @@ class CreateResponse extends Component implements HasForms
     public ?string $contact;
     #[Validate('required', message:'Please fill out with your email address.')]
     #[Validate('email', message:'Your email is invalid.')]
+    #[Validate('regex:/(.*)@(gmail|yahoo)\.com/i', message:'Your email is invalid.')]
     public ?string $email_address;
     #[Validate('required', message:'Please fill out with your current address.')]
     #[Validate('min:5', message:'Your current address format is invalid.')]
     public ?string $current_address;
     #[Validate('required', message:'Please attached your resume.')]
-    #[Validate('file|mimes:pdf,doc,docx', message:'Your file must be in PDF or MS Word Format.')]
+    #[Validate('file|mimes:pdf, doc', message:'Your file must be in PDF or MS Word Format.')]
     #[Validate('max:5120', message:'Your file must have maximum size of 5MB.')]
     public $attachment;
     
-    // public $Disabled = false;
 
     protected $casts = [
         'date_response' => 'datetime',
         // 'attachment' => 'array',
+       
     ];
 
 
     public function mount(Response $response): void
     {
-        // $this->form->fill();
+       
         $this->form->fill($response->toArray());
-        // $this->date_response = Carbon::now()->format('M-d-Y');
-        // $this->full_name = $response->full_name;
-        // $this->contact = $response->contact;
-        // $this->email_address = $response->email_address;
-        // $this->current_address = $response->current_address;
-        // $this->attachment = [];
         
     }
+
+   
     
     
     public function form(Form $form): Form
@@ -121,44 +109,39 @@ class CreateResponse extends Component implements HasForms
                 ->relationship('post', 'title')
                 // ->readOnly()
                 ->label(__('Position'))
-                // ->required()
+                ->required()
                 ->columnSpan(3),
 
                 TextInput::make('full_name')
                 ->label(__('Full Name'))
                 ->minValue(5)
                 ->required()
-                ->live()
                 ->columnSpan(3),
 
                 DatePicker::make('date_response')
                 ->label(__('Date'))
                 ->default(now())
                 ->readOnly()
-                ->required()
                 ->columnSpan(1),
 
                 TextInput::make('contact')
                 ->label(__('Contact Number'))
-                ->required()
                 ->minValue(11)
-                ->live()
+                ->required()
                 ->columnSpan(1),
 
                 TextInput::make('email_address')
                 ->label(__('Email'))
                 ->unique()
                 ->email()
-                ->live()
                 ->required()
+                ->endsWith(['.com,.org,.ph'])
                 ->columnSpan(1),
 
                 TextInput::make('current_address')
                 ->label(__('Current Addresss'))
-                ->minValue(20)
+                ->minValue(5)
                 ->required()
-                ->live()
-
                 ->columnSpan(3),
                 
                 FileUpload::make('attachment')
@@ -178,17 +161,13 @@ class CreateResponse extends Component implements HasForms
                 // ->fetchFileInformation(true)
                 // ->moveFiles()
                 // ->storeFiles(true)
-                ->required()
                 ->live()
                 ->columnSpan(3)
                 ->id('attachment')
+                ->required()
 
 
-        
-                // ,
-                // Hidden::make('attachment')
-
-        
+    
                 ,
 
                 ])
@@ -205,25 +184,35 @@ class CreateResponse extends Component implements HasForms
     {
         $this->validate();
         $response = Response::create($this->form->getState());
-        // $this->attachment->store(path: 'form-attachments');
-        
-        // dd($this->form->getState());
+
+        // try {
+        //     // Validate the form
+        //     $this->validate();
+    
+        //     // If validation passes, create the response
+        //     $response = Response::create($this->form->getState());
+    
+        //     // You may want to handle the created response here, e.g., saving it or returning it
+        //     // $this->saveResponse($response);
+        //     // return $response;
+        // } catch (\Exception $e) {
+        //     // Handle validation errors or other exceptions
+        //     // Log the error or return an error message
+        //     // For example:
+        //     // error_log($e->getMessage());
+        //     // return ['error' => $e->getMessage()];
+        //     throw new \Exception('Validation failed: ' . $e->getMessage());
+        // }
     
         // Save the relationships from the form to the post after it is created.
         $this->form->model($response)->saveRelationships();
 
-        $response->notify(new ResponseUpdate($response));
-        
+        $this->form->fill();
+        $this->attachment=null;
 
-        
+        // $response->notify(new ResponseUpdate($response));
         
         $this->dispatch('post-created');
-        // $post_title = 'test message';
-        
-        
-        // $this->form->fill();
-        
-        // $this->redirect('/job');
         
     }
     #[On('post-created')] 

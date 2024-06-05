@@ -18,7 +18,7 @@ class PostList extends Component
     public $sort = 'desc';
 
     #[Url()]
-    public $search = '';
+    public ?string $search = '';
 
     #[Url()]
     public $category = '';
@@ -35,6 +35,7 @@ class PostList extends Component
     public function updateSearch($search)
     {
         $this->search = $search;
+        // $this->category = '';
         $this->resetPage();
     }
 

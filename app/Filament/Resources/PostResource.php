@@ -64,7 +64,7 @@ class PostResource extends Resource
                         TextInput::make('title')
                             ->required()
                             ->label(__('Job Title'))
-                            ->live(onBlur: true)
+                            ->live()
                             ->columnSpan(2)
                             ->afterStateUpdated(
                                 function (string $operation, string $state, Forms\Set $set) {
