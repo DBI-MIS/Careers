@@ -79,7 +79,7 @@ class CreateResponse extends Component implements HasForms, HasActions
     #[Validate('min:5', message:'Your current address format is invalid.')]
     public ?string $current_address;
     #[Validate('required', message:'Please attached your resume.')]
-    #[Validate('file|mimes:pdf, doc', message:'Your file must be in PDF or MS Word Format.')]
+    #[Validate('file|mimes:pdf, doc, docx', message:'Your file must be in PDF or MS Word Format.')]
     #[Validate('max:5120', message:'Your file must have maximum size of 5MB.')]
     public $attachment;
     
