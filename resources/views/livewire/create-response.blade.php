@@ -155,7 +155,19 @@
                         <span class="error text-red-600 text-sm">{{ $message }}</span>
                     @enderror
                 </div>
+                <div id="captcha" class="mt-4" wire:ignore></div>
 
+ 
+
+                @error('captcha')
+        
+                    <p class="mt-3 text-sm text-red-600 text-left">
+        
+                        {{ $message }}
+        
+                    </p>
+        
+                @enderror
 
 
                 {{-- <livewire:dropzone
@@ -182,6 +194,42 @@
                 @endif
             </div>
     </form>
+
+    <script src="https://www.google.com/recaptcha/api.js?onload=handle&render=explicit"
+
+    async
+
+    defer>
+
+</script>
+
+ 
+
+<script>
+
+    var  handle = function(e) {
+
+        widget = grecaptcha.render('captcha', {
+
+            'sitekey': '{{ env('CAPTCHA_SITE_KEY') }}',
+
+            'theme': 'light', // you could switch between dark and light mode.
+
+            'callback': verify
+
+        });
+
+ 
+
+    }
+
+    var verify = function (response) {
+
+        @this.set('captcha', response)
+
+    }
+
+</script>
 
 
     <x-filament-actions::modals />

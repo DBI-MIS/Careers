@@ -7,7 +7,7 @@ use Livewire\Component;
 
 class SearchBox extends Component
 {
-    public $search;
+    public ?string $search;
  
     public function update ()
     {  

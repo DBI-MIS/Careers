@@ -7,6 +7,7 @@ use App\Filament\Resources\CategoryResource\RelationManagers;
 use App\Models\Category;
 use Filament\Forms;
 use Filament\Forms\Components\ColorPicker;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Form;
@@ -44,16 +45,15 @@ class CategoryResource extends Resource
                     ->required()
                     ->label(__('Category'))
                     ->live(onBlur:true)
-                    ->columnSpan(2)
+                    ->columnSpan(1)
                     ->afterStateUpdated(
                         function(string $operation, string $state, Forms\Set $set) {
                         if ($operation === 'edit'){
                             return;}
                     $set('slug', Str::slug($state));
                     }),
-                TextInput::make('slug')
+                Hidden::make('slug')
                     ->required()
-                    ->maxLength(255)
                     ->unique(ignoreRecord: true),
 
                 ToggleButtons::make('text_color')->default('white')
@@ -67,6 +67,7 @@ class CategoryResource extends Resource
                         ])
                     ->grouped()
                     ->label(__('Text Color')),
+                    
 
                 ToggleButtons::make('bg_color')->default('blue')
                     ->required()
@@ -80,7 +81,7 @@ class CategoryResource extends Resource
                     ->grouped()
                     ->label(__('Background Color')),
                 
-            ]);
+            ])->columns(3);
     }
 
     public static function table(Table $table): Table

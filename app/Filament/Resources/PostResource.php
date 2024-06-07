@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Post;
 use Filament\Forms;
 use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Form;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
@@ -19,6 +20,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\MarkdownEditor;
+use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
@@ -64,7 +66,7 @@ class PostResource extends Resource
                         TextInput::make('title')
                             ->required()
                             ->label(__('Job Title'))
-                            ->live()
+                            ->live(onBlur: true)
                             ->columnSpan(2)
                             ->afterStateUpdated(
                                 function (string $operation, string $state, Forms\Set $set) {
@@ -81,20 +83,17 @@ class PostResource extends Resource
                             ->multiple()
                             ->relationship('categories', 'title')
                             ->searchable()
-                            ->hint('*select main category first')
                             ->preload()
+                            ->hint('*select main category first')
                             ->label(__('Job Categories'))
                             ->createOptionForm([
                                 TextInput::make('title')
                                     ->required()
                                     ->label(__('Category'))
-                                    ->live()
-                                    ->columnSpan(2)
+                                    ->live(debounce: 300)
+                                    // ->columns(3)
                                     ->afterStateUpdated(
                                         function (string $operation, string $state, Forms\Set $set) {
-                                            if ($operation === 'edit') {
-                                                return;
-                                            }
                                             $set('slug', Str::slug($state));
                                         }
                                     ),
@@ -102,7 +101,8 @@ class PostResource extends Resource
                                     ->required()
                                     ->unique(ignoreRecord: true),
 
-                                ToggleButtons::make('text_color')->default('white')
+                                ToggleButtons::make('text_color')
+                                ->default('white')
                                     ->required()
                                     ->options([
                                         'white' => 'white',
@@ -147,21 +147,18 @@ class PostResource extends Resource
 
 
 
-                        MarkdownEditor::make('post_description')
+                        RichEditor::make('post_description')
                             ->required()
                             ->label(__('Job Description'))
                             ->disableToolbarButtons([
                                 'attachFiles',
                                 'blockquote',
-                                'bold',
                                 'codeBlock',
                                 'h2',
                                 'h3',
-                                'italic',
                                 'link',
                                 'orderedList',
                                 'strike',
-                                'underline',
                             ])
                             ->columnSpan(2),
                         RichEditor::make('post_responsibility')
@@ -170,14 +167,12 @@ class PostResource extends Resource
                             ->disableToolbarButtons([
                                 'attachFiles',
                                 'blockquote',
-                                'bold',
                                 'codeBlock',
                                 'h2',
                                 'h3',
                                 'link',
                                 'orderedList',
                                 'strike',
-                                'underline',
                             ])
                             ->columnSpan(2),
                         RichEditor::make('post_qualification')
@@ -186,14 +181,12 @@ class PostResource extends Resource
                             ->disableToolbarButtons([
                                 'attachFiles',
                                 'blockquote',
-                                'bold',
                                 'codeBlock',
                                 'h2',
                                 'h3',
                                 'link',
                                 'orderedList',
                                 'strike',
-                                'underline',
                             ])
                             ->columnSpan(2),
                     ])->columnSpan(2),
@@ -229,14 +222,24 @@ class PostResource extends Resource
                             ->hint(str('What is this?'))
                             ->hintIcon('heroicon-o-information-circle', 'Set to "Active" to show it on the Search Job Page'),
 
-                        ToggleButtons::make('job_type')
+                        // ToggleButtons::make('job_type')
+                        //     ->required()
+                        //     ->options([
+                        //         'Full Time' => 'Full Time',
+                        //         'Part Time' => 'Part Time',
+                        //         'Internship' => 'Internship'
+                        //     ])
+                        //     ->grouped()
+                        //     ->label(__('Job Type')),
+
+                            Radio::make('job_type')
                             ->required()
                             ->options([
                                 'Full Time' => 'Full Time',
                                 'Part Time' => 'Part Time',
                                 'Internship' => 'Internship'
-                            ])
-                            ->grouped()
+                            ])->inline()
+                            ->inlineLabel(false)
                             ->label(__('Job Type')),
 
                         ToggleButtons::make('job_location')

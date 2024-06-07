@@ -47,7 +47,9 @@ use Filament\Pages\Concerns\InteractsWithFormActions;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\HtmlString;
+use Illuminate\Validation\ValidationException;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use function Filament\Support\is_slot_empty;
 use function Livewire\store;
@@ -82,6 +84,8 @@ class CreateResponse extends Component implements HasForms, HasActions
     #[Validate('file|mimes:pdf, doc, docx', message:'Your file must be in PDF or MS Word Format.')]
     #[Validate('max:5120', message:'Your file must have maximum size of 5MB.')]
     public $attachment;
+
+    public $captcha = null;
     
 
     protected $casts = [
@@ -178,7 +182,59 @@ class CreateResponse extends Component implements HasForms, HasActions
             
     }
     
-    
+    public function updatedCaptcha($token)
+
+{
+
+    $response = Http::post(
+
+        'https://www.google.com/recaptcha/api/siteverify?secret='.
+
+        env('CAPTCHA_SECRET_KEY').
+
+        '&response='.$token
+
+    );
+
+ 
+
+    $success = $response->json()['success'];
+
+ 
+
+    if (! $success) {
+
+        throw ValidationException::withMessages([
+
+            'captcha' => __('Google thinks, you are a bot, please refresh and try again!'),
+
+        ]);
+
+    } else {
+
+        $this->captcha = true;
+
+    }
+
+}
+
+ 
+
+// validate the captcha rule
+
+protected function rules()
+
+{
+
+    return [
+
+        'captcha' => ['required'],
+
+        // ...
+
+    ];
+
+}
     
     public function create(): void
     {
@@ -210,11 +266,12 @@ class CreateResponse extends Component implements HasForms, HasActions
         $this->form->fill();
         $this->attachment=null;
 
-        // $response->notify(new ResponseUpdate($response));
+        $response->notify(new ResponseUpdate($response));
         
         $this->dispatch('post-created');
         
     }
+
     #[On('post-created')] 
     public function updatePostList()
     {

@@ -71,7 +71,7 @@ class ResponseUpdate extends Notification
             ->view('mail.mail')->with('response', $this->response)->with('post', $post)
             ->to('desktoppublisher@dbiphils.com')
             ->subject('New Job Application')
-            ->from('desktoppublisher@dbiphils.com', 'New Job Application ')
+            ->from('ggcmis@dbiphils.com', 'New Job Application ')
             // ->replyTo($this->response->email, $this->response->full_name, 'replyTo')
                 
             
