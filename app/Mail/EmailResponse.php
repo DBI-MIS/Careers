@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\Post;
 use App\Models\Response;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
@@ -27,31 +28,13 @@ use Symfony\Component\Mime\Header\UnstructuredHeader;
 
 class EmailResponse extends Mailable implements ShouldQueue
 {
-    use Queueable, SerializesModels, MailerSendTrait;
-    
-    /**
-     * Create a new message instance.
-     */
-    
-    // public $post_title;
-    // public $date_response;
-    // public $full_name;    
-    // public $contact;
-    // public $email_address;
-    // public $current_address;
-    // public $attachment;
+    use Queueable, SerializesModels;
 
     public $response;
     
-    public function __construct($response, private $attachment )
+    public function __construct($response)
     {
         $this->response = $response;
-        // $post_title = $this->response->post_title;
-        // $full_name = $this->response->full_name;
-        // $date_response = $this->response->date_response;
-        // $contact = $this->response->contact;
-        // $email_address = $this->response->email_address;
-        // $attachment = $this->response->attachment;
     }
 
     /**
@@ -61,15 +44,7 @@ class EmailResponse extends Mailable implements ShouldQueue
     {
         return new Envelope(
             subject: 'New Job Application',
-            // from: new Address('desktoppublisher@dbiphils.com', 'Notification'),
-            using: [
-                function (Email $email) {
-                    // Category (should be only one)
-                    $email->getHeaders()
-                        ->add(new CategoryHeader('Job Application'))
-                    ;
-                },
-            ]
+            from: new Address('ggcmis@dbiphils.com', 'Notification'),
         );
     }
 
@@ -81,22 +56,24 @@ class EmailResponse extends Mailable implements ShouldQueue
 
     public function content(): Content
     {
-        
-    
-        return new Content(
-            markdown: 'mail.mail',
-            
-            with: [
-                'response', $this->response,
-            //     'post_title' => $this->response->post_title,
-            //     'full_name' => $this->response->full_name,
-            //     'date_respone' => $this->response->date_response,
-            //     'contact' => $this->response->contact,
-            //     'email_address' => $this->response->email_address,
-            //     'attachment' => $this->response->attachment
+        // $response = $this->response;
+        // $post = Post::find($response->post_title)->title;
 
-            ],
+        return new Content(
+            view: 'mail.mail',
+            
+            // with: [
+            //     'response', $this->response,
+            //     'post_title' => $post,
+            // //     'full_name' => $this->response->full_name,
+            // //     'date_respone' => $this->response->date_response,
+            // //     'contact' => $this->response->contact,
+            // //     'email_address' => $this->response->email_address,
+            // //     'attachment' => $this->response->attachment
+
+            // ],
         );
+
     }
 
     
@@ -108,7 +85,7 @@ class EmailResponse extends Mailable implements ShouldQueue
     public function attachments(): array
     {
         return [
-            Attachment::fromPath('storage/'.$this->response->attachment),
+            // Attachment::fromPath('storage/'.$this->response->attachment),
         ];
     }
 

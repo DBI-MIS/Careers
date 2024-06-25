@@ -155,7 +155,7 @@
                         <span class="error text-red-600 text-sm">{{ $message }}</span>
                     @enderror
                 </div>
-                <div id="captcha" class="mt-4" wire:ignore></div>
+                {{-- <div id="captcha" class="mt-4" wire:ignore></div>
 
  
 
@@ -167,7 +167,7 @@
         
                     </p>
         
-                @enderror
+                @enderror --}}
 
 
                 {{-- <livewire:dropzone
@@ -195,16 +195,16 @@
             </div>
     </form>
 
-    <script src="https://www.google.com/recaptcha/api.js?onload=handle&render=explicit"
+    {{-- <script src="https://www.google.com/recaptcha/api.js?onload=handle&render=explicit"
 
     async
 
     defer>
 
-</script>
+</script> --}}
 
  
-
+{{-- 
 <script>
 
     var  handle = function(e) {
@@ -229,7 +229,7 @@
 
     }
 
-</script>
+</script> --}}
 
 
     <x-filament-actions::modals />

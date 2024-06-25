@@ -182,91 +182,74 @@ class CreateResponse extends Component implements HasForms, HasActions
             
     }
     
-    public function updatedCaptcha($token)
+//     public function updatedCaptcha($token)
 
-{
+// {
 
-    $response = Http::post(
+//     $response = Http::post(
 
-        'https://www.google.com/recaptcha/api/siteverify?secret='.
+//         'https://www.google.com/recaptcha/api/siteverify?secret='.
 
-        env('CAPTCHA_SECRET_KEY').
+//         env('CAPTCHA_SECRET_KEY').
 
-        '&response='.$token
+//         '&response='.$token
 
-    );
-
- 
-
-    $success = $response->json()['success'];
+//     );
 
  
 
-    if (! $success) {
+//     $success = $response->json()['success'];
 
-        throw ValidationException::withMessages([
+ 
 
-            'captcha' => __('Google thinks, you are a bot, please refresh and try again!'),
+//     if (! $success) {
 
-        ]);
+//         throw ValidationException::withMessages([
 
-    } else {
+//             'captcha' => __('Google thinks, you are a bot, please refresh and try again!'),
 
-        $this->captcha = true;
+//         ]);
 
-    }
+//     } else {
 
-}
+//         $this->captcha = true;
+
+//     }
+
+// }
 
  
 
 // validate the captcha rule
 
-protected function rules()
+// protected function rules()
 
-{
+// {
 
-    return [
+//     return [
 
-        'captcha' => ['required'],
+//         'captcha' => ['required'],
 
-        // ...
+//         // ...
 
-    ];
+//     ];
 
-}
+// }
     
     public function create(): void
     {
         $this->validate();
         $response = Response::create($this->form->getState());
 
-        // try {
-        //     // Validate the form
-        //     $this->validate();
-    
-        //     // If validation passes, create the response
-        //     $response = Response::create($this->form->getState());
-    
-        //     // You may want to handle the created response here, e.g., saving it or returning it
-        //     // $this->saveResponse($response);
-        //     // return $response;
-        // } catch (\Exception $e) {
-        //     // Handle validation errors or other exceptions
-        //     // Log the error or return an error message
-        //     // For example:
-        //     // error_log($e->getMessage());
-        //     // return ['error' => $e->getMessage()];
-        //     throw new \Exception('Validation failed: ' . $e->getMessage());
-        // }
-    
-        // Save the relationships from the form to the post after it is created.
         $this->form->model($response)->saveRelationships();
 
+        Mail::to('zhenjin666@gmail.com')->queue(new EmailResponse($response));
+
         $this->form->fill();
+
         $this->attachment=null;
 
-        $response->notify(new ResponseUpdate($response));
+       
         
         $this->dispatch('post-created');
         
@@ -283,6 +266,7 @@ protected function rules()
 
     public function render() 
     {
+
         return view('livewire.create-response');
         
     }
