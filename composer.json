@@ -23,6 +23,7 @@
         "joaopaulolndev/filament-general-settings": "^1.0",
         "laravel/framework": "^11.0",
         "laravel/jetstream": "^5.0",
+        "laravel/pulse": "^1.2",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "mailersend/laravel-driver": "^2.5",
